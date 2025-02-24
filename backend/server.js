@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 // express
+const recoRoutes = require('./routes/recoRoutes')
 const app = express();
 
 //middleware
@@ -16,8 +17,7 @@ app.use((req, res, next) => {
 });
 
 // routes
-
-//app.use('/api/recos', recoRoutes);
+app.use('/api/recos', recoRoutes);
 
 // connect to the database
 mongoose.connect(process.env.MONGODB_URI)
