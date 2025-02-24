@@ -1,10 +1,11 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import SignIn from './pages/SignIn';
 import { AuthContextProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
-
+// pages
+import Home from './pages/Home';
+import SignIn from './pages/SignIn';
+import Recos from './pages/Recos';
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/account" element={<Home />} />
+            <Route path="/recos" element={<Recos />} />
           </Routes>
 
         </div>
