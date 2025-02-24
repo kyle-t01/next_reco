@@ -1,8 +1,12 @@
+import { useEffect } from 'react'
 import GoogleButton from 'react-google-button'
 import { UserAuth } from '../context/AuthContext'
-const SignIn = () => {
-    const { googleSignIn } = UserAuth()
+import { useNavigate } from 'react-router-dom'
 
+
+const SignIn = () => {
+    const { googleSignIn, user } = UserAuth()
+    const navigate = useNavigate()
     // google sign in
     const handleGoogleSignIn = async () => {
         try {
@@ -14,7 +18,14 @@ const SignIn = () => {
         }
     }
 
+    useEffect(() => {
 
+        if (user != null) {
+            // already signed in 
+            console.log("already signed in")
+            navigate('/recos')
+        }
+    }, [user]);
 
     return (
         <div className='sign-in'>
