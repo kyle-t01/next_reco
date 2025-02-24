@@ -8,7 +8,7 @@ const Home = () => {
         <div className="home">
             <h1>Welcome to NextReco!</h1>
             <p>"Let's do this next!"</p>
-            <button>Sign in with Google</button>
+            <p>Get started by adding a "Reco"!</p>
         </div>
     );
 }
