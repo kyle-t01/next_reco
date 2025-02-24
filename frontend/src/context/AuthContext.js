@@ -30,6 +30,7 @@ export const AuthContextProvider = ({ children }) => {
     // sign out
     const logOut = () => {
         signOut(auth)
+        setUser(null)
     }
 
     return (
