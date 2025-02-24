@@ -1,7 +1,11 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
+
+// components
 import Navbar from './components/Navbar';
+import Protected from './components/Protected';
+
 // pages
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
@@ -17,7 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/recos" element={<Recos />} />
+            <Route path="/recos" element={<Protected><Recos /></Protected>} />
           </Routes>
 
         </div>
