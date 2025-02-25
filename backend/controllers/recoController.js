@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 
 // GET all Recos for a user
 const getRecos = async (req, res) => {
-    // 
     console.log("tried to GET all Recos")
-
+    const recos = await Reco.find({}).sort({ createdAt: -1 })
+    res.status(200).json(recos)
 }
 
 // GET a Reco for a user

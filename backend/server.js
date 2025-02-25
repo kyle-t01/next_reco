@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// express
+require('./firebase/firebaseAdmin')
 const recoRoutes = require('./routes/recoRoutes')
 const app = express();
 
