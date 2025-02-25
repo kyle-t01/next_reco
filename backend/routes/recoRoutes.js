@@ -1,8 +1,11 @@
 const express = require('express')
-// const Reco = require('../models/recoModel')
 const { getRecos, createReco, getReco, updateReco, deleteReco } = require('../controllers/recoController')
 
 const router = express.Router();
+const authMW = require('../middlewares/authMiddleware');
+
+// use authentication when using Reco
+router.use(authMW)
 
 // GET all Recos
 router.get('/', getRecos)

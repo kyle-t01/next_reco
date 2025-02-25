@@ -4,6 +4,7 @@ const admin = require('firebase-admin')
 
 const authMW = async (req, res, next) => {
     try {
+        console.log("using authMW middleware ")
         // get firebase ID token from request header
         const idToken = req.header('Authorization').split('Bearer')[1];
 
@@ -17,7 +18,9 @@ const authMW = async (req, res, next) => {
 
 
     } catch (error) {
-        res.state(401).json({ error: 'Unauth\'d Access' })
+        console.log(error)
+        res.status(401).json({ error: error })
+
 
     }
 }
