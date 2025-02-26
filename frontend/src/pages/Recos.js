@@ -8,59 +8,65 @@ import RecoGridDisplay from "../components/RecoGridDisplay";
 const Recos = () => {
     const { user } = UserAuth()
     // recos
-    const [personalRecos, setPersonalRecos] = useState(null)
-    const [groupRecos, setGroupRecos] = useState(null)
-    const [proposedRecos, setProposedRecos] = useState(null)
-
+    const [recos, setRecos] = useState(null)
     const [isFormOpen, setIsFormOpen] = useState(false)
 
-    // retrieving recos
-    const retrievePersonalRecos = async () => {
+    // active tab
+    const [activeTab, setActiveTab] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
+
+    // load recos
+    const loadRecos = async () => {
         if (!user) return;
-        const data = await getRecos(user)
-        console.log(data)
-        setPersonalRecos(data)
+        // load recos depending on the activeTab
+        setIsLoading(true);
+        if (activeTab === 0) {
+            setRecos(await getRecos(user));
+        } else if (activeTab === 1) {
+            setRecos(await getGroupRecos(user));
+        } else if (activeTab === 2) {
+            setRecos(await getProposedRecos(user));
+        }
+
+        setIsLoading(false);
+
     }
-    const retrieveGroupRecos = async () => {
-        if (!user) return;
-        const data = await getGroupRecos(user)
-        console.log(data)
-        setGroupRecos(data)
-    }
-    const retrieveProposedRecos = async () => {
-        if (!user) return;
-        const data = await getProposedRecos(user)
-        console.log(data)
-        setProposedRecos(data)
-    }
-    // refresh all reco lists
-    const refreshAllRecos = async () => {
-        await retrievePersonalRecos()
-        await retrieveGroupRecos()
-        await retrieveProposedRecos()
+
+
+    // refresh recos of a specified tab
+    const switchToTab = async (tabNum) => {
+        // if tab num is the same, avoid retrieving from the database
+        if (tabNum == activeTab) return;
+
+        setActiveTab(tabNum);
+
     }
 
     useEffect(() => {
+        loadRecos()
 
-        retrievePersonalRecos()
-        retrieveGroupRecos()
-        retrieveProposedRecos()
-
-    }, [user]);
+    }, [user, activeTab]);
 
 
 
     return (
         <div className="recos">
             <h1>This is where you can see all Recos</h1>
-            <h2>Personal recos</h2>
-            <RecoGridDisplay recos={personalRecos} />
-            <h2>Group recos</h2>
-            <RecoGridDisplay recos={groupRecos} />
-            <h2>Proposed recos</h2>
-            <RecoGridDisplay recos={proposedRecos} />
-            <button onClick={() => setIsFormOpen(true)}>+ Add Reco</button>
-            <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={refreshAllRecos} />
+
+            <div className="reco-navbar">
+                <button onClick={() => switchToTab(0)}>Personal</button>
+                <button onClick={() => switchToTab(1)}>Group</button>
+                <button onClick={() => switchToTab(2)}>Do this next</button>
+                <button onClick={() => setIsFormOpen(true)}>+ Add Reco</button>
+            </div>
+
+            {!isLoading && (activeTab == 0) && <RecoGridDisplay recos={recos} />}
+
+            {!isLoading && (activeTab == 1) && <RecoGridDisplay recos={recos} />}
+
+            {!isLoading && (activeTab == 2) && <RecoGridDisplay recos={recos} />}
+
+            <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} />
         </div>
     );
 }
