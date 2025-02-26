@@ -10,15 +10,18 @@ const Recos = () => {
     const [personalRecos, setPersonalRecos] = useState(null)
     const [isFormOpen, setIsFormOpen] = useState(false)
 
-    useEffect(() => {
-        const getPersonalRecos = async (user) => {
-            const data = await getRecos(user)
-            console.log(data)
-            setPersonalRecos(data)
-        }
-        getPersonalRecos(user)
+    const getPersonalRecos = async () => {
+        if (!user) return;
+        const data = await getRecos(user)
+        console.log(data)
+        setPersonalRecos(data)
+    }
 
-    }, []);
+    useEffect(() => {
+
+        getPersonalRecos()
+
+    }, [user]);
 
 
 
@@ -27,7 +30,7 @@ const Recos = () => {
             <h1>This is where you can see all Recos</h1>
             <RecoGridDisplay recos={personalRecos} />
             <button onClick={() => setIsFormOpen(true)}>+ Add Reco</button>
-            <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={() => { }} />
+            <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={getPersonalRecos} />
         </div>
     );
 }
