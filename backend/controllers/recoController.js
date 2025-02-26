@@ -7,12 +7,16 @@ const mongoose = require('mongoose');
 const getRecos = async (req, res) => {
     console.log("### GET ALL RECOS OF A USER ###")
     if (!req || !req.query) {
-        return res.status(400).json({ error: "getRecos: missing userID" });
+        return res.status(400).json({ error: "getRecos: missing query params" });
     }
-    const { uid } = req.query
+
+
+    let filter = { ...req.query };
+
+    console.log()
 
     try {
-        const recos = await Reco.find({ uid }).sort({ createdAt: -1 })
+        const recos = await Reco.find(filter).sort({ createdAt: -1 })
         res.status(200).json(recos)
     } catch (error) {
         console.log(error)
