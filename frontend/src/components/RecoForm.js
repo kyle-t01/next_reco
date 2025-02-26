@@ -125,13 +125,6 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 />
-                {/* Category */}
-                <label>Category</label>
-                <input
-                    type="text"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                />
                 {/* Description */}
                 <label>Description</label>
                 <input
@@ -174,3 +167,13 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
 }
 
 export default RecoForm;
+
+/*
+
+<label>Category</label>
+<input
+type="text"
+onChange={(e) => setCategory(e.target.value)}
+/>
+
+*/
