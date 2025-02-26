@@ -41,12 +41,23 @@ const Recos = () => {
 
     // render a tab and its contents when it is active
     const renderActiveTab = () => {
-        if (isLoading) return <p>LOADING...</p>;
+        if (isFormOpen) return;
+        if (isLoading) return <p>...</p>;
 
         return <RecoGridDisplay recos={recos} />;
     };
 
+    // render the reco navbar
+    const renderRecoNavbar = () => {
+        if (isFormOpen) return;
 
+        return < div className="reco-navbar" >
+            <button onClick={() => switchToTab(0)}>Personal</button>
+            <button onClick={() => switchToTab(1)}>Group</button>
+            <button onClick={() => switchToTab(2)}>Do this next</button>
+            <button onClick={() => setIsFormOpen(true)}>+ Add Reco</button>
+        </div >
+    };
 
     useEffect(() => {
         loadRecos()
@@ -56,15 +67,10 @@ const Recos = () => {
     return (
         <div className="recos">
             <h1>This is where you can see all Recos</h1>
+            {renderRecoNavbar()}
 
-            <div className="reco-navbar">
-                <button onClick={() => switchToTab(0)}>Personal</button>
-                <button onClick={() => switchToTab(1)}>Group</button>
-                <button onClick={() => switchToTab(2)}>Do this next</button>
-                <button onClick={() => setIsFormOpen(true)}>+ Add Reco</button>
-            </div>
 
-            {!isFormOpen && renderActiveTab()}
+            {renderActiveTab()}
 
             <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} />
         </div>
