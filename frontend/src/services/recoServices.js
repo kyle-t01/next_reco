@@ -1,7 +1,7 @@
 /* set of helper functions connecting backend and frontend*/
 
 
-const fetchRecos = async (user, method, body = null) => {
+const fetchRecos = async (user, method, body = null, queryParams = {}) => {
 
     console.log("fetching Recos for user: ", user.uid, " via: ", method)
 
@@ -26,12 +26,14 @@ const fetchRecos = async (user, method, body = null) => {
         // add body when req method is not GET
         if (body && method !== "GET") {
             requestOptions.body = JSON.stringify(body);
-
+            console.log(requestOptions.body)
         }
 
-        const response = await fetch(`http://localhost:4000/api/recos?uid=${user.uid}`, {
-            ...requestOptions
-        });
+        // construct the query string
+        const queryStr = new URLSearchParams(queryParams).toString();
+        const url = `http://localhost:4000/api/recos${queryStr ? `?${queryStr}` : ""}`;
+
+        const response = await fetch(url, requestOptions);
 
 
         if (response.ok) {
@@ -52,7 +54,18 @@ const fetchRecos = async (user, method, body = null) => {
 }
 
 export const getRecos = async (user) => {
-    const data = await fetchRecos(user, "GET");
+    const data = await fetchRecos(user, "GET", null, { uid: user.uid });
+    return data;
+}
+
+
+export const getGroupRecos = async (user) => {
+    const data = await fetchRecos(user, "GET", null, { isPrivate: "false" });
+    return data;
+}
+
+export const getProposedRecos = async (user) => {
+    const data = await fetchRecos(user, "GET", null, { isProposed: "true" });
     return data;
 }
 
