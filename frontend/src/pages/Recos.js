@@ -27,9 +27,7 @@ const Recos = () => {
         } else if (activeTab === 2) {
             setRecos(await getProposedRecos(user));
         }
-
         setIsLoading(false);
-
     }
 
 
@@ -37,17 +35,23 @@ const Recos = () => {
     const switchToTab = async (tabNum) => {
         // if tab num is the same, avoid retrieving from the database
         if (tabNum == activeTab) return;
-
         setActiveTab(tabNum);
-
     }
+
+
+    // render a tab and its contents when it is active
+    const renderActiveTab = () => {
+        if (isLoading) return <p>LOADING...</p>;
+
+        return <RecoGridDisplay recos={recos} />;
+    };
+
+
 
     useEffect(() => {
         loadRecos()
 
     }, [user, activeTab]);
-
-
 
     return (
         <div className="recos">
@@ -60,11 +64,7 @@ const Recos = () => {
                 <button onClick={() => setIsFormOpen(true)}>+ Add Reco</button>
             </div>
 
-            {!isLoading && (activeTab == 0) && <RecoGridDisplay recos={recos} />}
-
-            {!isLoading && (activeTab == 1) && <RecoGridDisplay recos={recos} />}
-
-            {!isLoading && (activeTab == 2) && <RecoGridDisplay recos={recos} />}
+            {!isFormOpen && renderActiveTab()}
 
             <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} />
         </div>
