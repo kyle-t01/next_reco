@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
 import { createReco } from "../services/recoServices";
+import { GoogleMap, useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
+
+
 
 /*
     title
@@ -14,6 +17,17 @@ import { createReco } from "../services/recoServices";
 */
 
 const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
+    const inputRef = useRef(null)
+
+    // load the google maps api
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_PLACES_API_KEY,
+        libraries: ["places"]
+    });
+    console.log("isLoaded: ", isLoaded)
+
+
     const { user } = UserAuth()
     console.log("const user = ", user)
     const [title, setTitle] = useState("");
@@ -22,6 +36,40 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
     const [isProposed, setIsProposed] = useState(false);
+
+
+    const renderSearchBar = () => {
+        if (!isLoaded) return;
+
+        return <div>
+            <StandaloneSearchBox
+                onLoad={(ref) => inputRef.current = ref}
+                onPlacesChanged={handleOnPlacesChanged}
+            >
+                <input
+                    type="text"
+                    placehoder="Type an address"
+
+
+                />
+            </StandaloneSearchBox>
+        </div>
+    }
+
+    const handleOnPlacesChanged = () => {
+        if (!inputRef) return;
+        const placeDetails = inputRef.current.getPlaces()
+        // gives the details that has been autofilled
+        const placeInfo = placeDetails[0]
+
+        // now set and update any fields in the form
+
+
+        setTitle(placeInfo.name)
+        setAddress(placeInfo.formatted_address)
+
+
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -47,13 +95,15 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
 
 
     return (
-        <div className="modal-form">
+        <div className="modal-form" >
             <div className="form-header">
                 <h3>Add a New Reco</h3>
                 <button className="close" onClick={onClose}>x</button>
             </div>
 
             <form>
+                {/* Search Bar */}
+                {renderSearchBar()}
                 {/* Title */}
                 <label>Title</label>
                 <input
@@ -112,7 +162,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                 </div>
 
             </form>
-        </div>
+        </div >
     );
 }
 
