@@ -1,25 +1,25 @@
 // A box containing a summary of basic Reco information
 
-/* RECO */
-/*
-    title
-    category
-    address
-    description
-    is_private
-    is_proposed
-    uid
 
-*/
 
 const RecoBox = ({ reco }) => {
+    const { title, description, googleImageUrl } = reco;
     return (
         <div className="reco-box">
-            <h4>{reco.title}</h4>
-            <p>Placeholder Image</p>
-            <p>short description</p>
-            <p>{reco.createdAt}</p>
-        </div>);
+            {/* Title */}
+            <h4 className="reco-title">{title}</h4>
+
+            {/* Display Image */}
+            {googleImageUrl ? (
+                <img src={googleImageUrl} alt={title} className="reco-image" />
+            ) : (
+                <div className="image-placeholder">No Image Available</div>
+            )}
+            
+
+
+        </div>
+    );
 }
 
 export default RecoBox;
