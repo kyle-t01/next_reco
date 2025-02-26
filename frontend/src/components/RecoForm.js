@@ -22,10 +22,6 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
     const [isProposed, setIsProposed] = useState(false);
-    // using user id from firebase auth
-
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -52,8 +48,11 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
 
     return (
         <div className="modal-form">
-            <h3>Add a New Reco</h3>
-            <button className="close" onClick={onClose}>x</button>
+            <div className="form-header">
+                <h3>Add a New Reco</h3>
+                <button className="close" onClick={onClose}>x</button>
+            </div>
+
             <form>
                 {/* Title */}
                 <label>Title</label>
@@ -84,23 +83,28 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                     onChange={(e) => setDescription(e.target.value)}
                 />
                 {/* isPrivate */}
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={isPrivate}
-                        onChange={(e) => setIsPrivate(e.target.checked)}
-                    />
-                    Private
-                </label>
-                {/* isProposed */}
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={isProposed}
-                        onChange={(e) => setIsProposed(e.target.checked)}
-                    />
-                    Proposed
-                </label>
+                <div className="checkboxes">
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            checked={isPrivate}
+                            onChange={(e) => setIsPrivate(e.target.checked)}
+                        />
+                        Private
+                    </label>
+                    {/* isProposed */}
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            checked={isProposed}
+                            onChange={(e) => setIsProposed(e.target.checked)}
+                        />
+                        Proposed
+                    </label>
+                </div>
+
                 {/* buttons */}
                 <div className="button-group">
                     <button type="button" className="cancel" onClick={onClose}>Cancel</button>

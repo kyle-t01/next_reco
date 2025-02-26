@@ -19,3 +19,97 @@ code {
   padding: 10px;
   justify-content: center;
 }
+
+/* very basic styling for the reco form */
+.modal-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(173, 135, 135);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.close {
+  font-size: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+
+.modal-form form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+}
+
+
+.modal-form input {
+  border: 1px solid #120101;
+  padding: 12px;
+  font-size: 16px;
+  width: 90%;
+}
+
+.checkboxes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.checkboxes label {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  gap: 5px;
+}
+
+.checkboxes input {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.cancel {
+  background: #7f0909;
+}
+
+.submit {
+  background: rgba(32, 143, 26, 0.554);
+  color: rgb(0, 0, 0);
+}
