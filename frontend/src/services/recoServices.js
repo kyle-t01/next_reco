@@ -26,12 +26,11 @@ const fetchRecos = async (user, method, body = null) => {
         // add body when req method is not GET
         if (body && method !== "GET") {
             requestOptions.body = JSON.stringify(body);
+
         }
 
         const response = await fetch(`http://localhost:4000/api/recos?uid=${user.uid}`, {
-            method: method,
-            headers: headers,
-
+            ...requestOptions
         });
 
 
