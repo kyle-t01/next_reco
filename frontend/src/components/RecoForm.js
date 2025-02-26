@@ -32,9 +32,17 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         const uid = user.uid;
         const newReco = { title, category, address, description, isPrivate, isProposed, uid }
         // TODO: validate entries
-        console.log("newReco submitted was: ", newReco)
-        console.log("user object is: ", user)
-        const response = await createReco(user, newReco)
+        console.log("submitting a new reco")
+        try {
+            const response = await createReco(user, newReco)
+            if (response) {
+                onRecoAdded();
+                onClose();
+            }
+        } catch (error) {
+
+        }
+
 
     }
 
