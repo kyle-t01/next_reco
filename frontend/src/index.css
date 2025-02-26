@@ -113,3 +113,15 @@ code {
   background: rgba(32, 143, 26, 0.554);
   color: rgb(0, 0, 0);
 }
+
+/* reco box image styling */
+.reco-image {
+  width: 100%;
+
+  height: 200px;
+
+  object-fit: cover;
+
+  border-radius: 8px;
+  display: block;
+}
