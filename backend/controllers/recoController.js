@@ -5,11 +5,20 @@ const mongoose = require('mongoose');
 
 // GET all Recos for a user
 const getRecos = async (req, res) => {
-    console.log("tried to GET all Recos")
-    console.log("TODO: GET BY USER INSTEAD OF ALL RECOS IN DB")
+    console.log("### GET ALL RECOS OF A USER ###")
+    if (!req || !req.query) {
+        return res.status(400).json({ error: "getRecos: missing userID" });
+    }
+    const { uid } = req.query
 
-    const recos = await Reco.find({}).sort({ createdAt: -1 })
-    res.status(200).json(recos)
+    try {
+        const recos = await Reco.find({ uid }).sort({ createdAt: -1 })
+        res.status(200).json(recos)
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ error: error.message });
+    }
+
 }
 
 // GET a Reco for a user
@@ -22,7 +31,7 @@ const getReco = async (req, res) => {
 
 // POST a new Reco for a user
 const createReco = async (req, res) => {
-
+    console.log("### CREATE RECO ###")
     const reco = req.body
     console.log("newReco from req.body", reco)
 
