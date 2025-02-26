@@ -5,17 +5,6 @@ import { GoogleMap, useJsApiLoader, StandaloneSearchBox } from "@react-google-ma
 
 
 
-/*
-    title
-    category
-    address
-    description
-    is_private
-    is_proposed
-    uid
-
-*/
-
 const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const inputRef = useRef(null)
 
@@ -25,18 +14,16 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_PLACES_API_KEY,
         libraries: ["places"]
     });
-    console.log("isLoaded: ", isLoaded)
 
 
-    const { user } = UserAuth()
-    console.log("const user = ", user)
+    const { user } = UserAuth();
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("food");
     const [address, setAddress] = useState("");
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
     const [isProposed, setIsProposed] = useState(false);
-
+    const [googleImageUrl, setGoogleImageUrl] = useState("");
 
     const renderSearchBar = () => {
         if (!isLoaded) return;
@@ -48,7 +35,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
             >
                 <input
                     type="text"
-                    placehoder="Type an address"
+                    placehoder="Search for a place..."
 
 
                 />
@@ -69,15 +56,21 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         const googleMapsUrl = placeInfo.url || "Google Maps link not available";
         const descString = `📍${googleMapsUrl}\n🌐 ${website}`
         setDescription(descString);
+
+        // extracting the imageURL (google) 
+        let imageUrl = "";
+        const maxWidth = 400;
+        if (placeInfo.photos && placeInfo.photos.length > 0) {
+            imageUrl = placeInfo.photos[0].getUrl({ maxWidth: maxWidth });
+        }
+        setGoogleImageUrl(imageUrl)
+
     }
-
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const uid = user.uid;
-        const newReco = { title, category, address, description, isPrivate, isProposed, uid }
+        const newReco = { title, category, address, description, isPrivate, isProposed, uid, googleImageUrl }
         // TODO: validate entries
         console.log("submitting a new reco")
         try {
@@ -100,6 +93,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         setDescription("")
         setIsPrivate(false)
         setIsProposed(false)
+        setGoogleImageUrl("")
 
     }
 
@@ -175,7 +169,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                 </div>
 
             </form>
-        </div >
+        </div>
     );
 }
 
