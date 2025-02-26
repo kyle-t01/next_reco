@@ -1,16 +1,7 @@
 // Model for a reco
 
 /* RECO */
-/*
-    title
-    category
-    address
-    description
-    is_private
-    is_proposed
-    uid
 
-*/
 
 const mongoose = require('mongoose')
 
@@ -41,6 +32,9 @@ const recoSchema = new Schema({
     isProposed: {
         type: Boolean,
         default: false,
+    },
+    googleImageUrl: {
+        type: String,
     },
     uid: {
         type: String,
