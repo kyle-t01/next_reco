@@ -34,11 +34,11 @@ const recoSchema = new Schema({
     description: {
         type: String,
     },
-    is_private: {
+    isPrivate: {
         type: Boolean,
         default: false,
     },
-    is_proposed: {
+    isProposed: {
         type: Boolean,
         default: false,
     },
