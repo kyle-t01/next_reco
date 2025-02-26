@@ -63,13 +63,16 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         const placeInfo = placeDetails[0]
 
         // now set and update any fields in the form
-
-
         setTitle(placeInfo.name)
         setAddress(placeInfo.formatted_address)
-
-
+        const website = placeInfo.website || "Website not available";
+        const googleMapsUrl = placeInfo.url || "Google Maps link not available";
+        const descString = `📍${googleMapsUrl}\n🌐 ${website}`
+        setDescription(descString);
     }
+
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -90,6 +93,16 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
 
     }
 
+    const resetForm = () => {
+        setTitle("")
+        setCategory("food")
+        setAddress("")
+        setDescription("")
+        setIsPrivate(false)
+        setIsProposed(false)
+
+    }
+
     if (!isOpen) return null;
 
 
@@ -98,7 +111,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         <div className="modal-form" >
             <div className="form-header">
                 <h3>Add a New Reco</h3>
-                <button className="close" onClick={onClose}>x</button>
+                <button className="close" onClick={resetForm}>[reset]</button>
             </div>
 
             <form>
