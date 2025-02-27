@@ -4,7 +4,7 @@ import { createReco, updateReco } from "../services/recoServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 
 
-const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
+const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco }) => {
     const inputRef = useRef(null)
 
     // load the google maps api
@@ -99,7 +99,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
 
 
         };
-        const _id = reco._id
+        const _id = reco?._id
         const newReco = {
             _id,
             title,
@@ -119,12 +119,14 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
             if (updateMode) {
                 console.log("Updating reco:", newReco);
                 await updateReco(user, newReco);
+                onRecoUpdated()
             } else {
                 console.log("Creating new reco:", newReco);
                 await createReco(user, newReco);
+                onRecoAdded();
             }
             // recoAdded is called wwhen updating or creating
-            onRecoAdded();
+
             onClose();
         } catch (error) {
 
