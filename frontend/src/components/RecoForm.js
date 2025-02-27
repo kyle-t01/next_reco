@@ -23,6 +23,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
     const [isProposed, setIsProposed] = useState(false);
+    const [imageUrls, setImageUrls] = useState([]);
     const [googleData, setGoogleData] = useState(null);
 
     const renderSearchBar = () => {
@@ -55,23 +56,43 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         console.log(placeDetails)
         const placeInfo = placeDetails[0]
         setGoogleData(placeInfo);
-        console.log("The google object is: ,", placeInfo.name)
+        console.log("The google data name is: ,", placeInfo.name)
 
         // now set and update any fields in the form
         setTitle(placeInfo.name)
         setAddress(placeInfo.formatted_address)
 
-        // save an array of google image urls
-
+        let urls = [];
+        if (placeInfo.photos && placeInfo.photos.length > 0) {
+            urls = placeInfo.photos.map(photo => photo.getUrl({ maxWidth: 400 }));
+        }
+        setImageUrls(urls)
 
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const uid = user.uid;
-        const newReco = { title, subTitle, category, address, description, isPrivate, isProposed, uid, googleData }
+        const newGoogleData = {
+            ...googleData,
+            imageUrls: imageUrls
+
+
+        };
+        const newReco = {
+            title,
+            subTitle,
+            category,
+            address,
+            description,
+            isPrivate,
+            isProposed,
+            uid,
+            googleData: newGoogleData
+        };
+
         // TODO: validate entries
-        console.log("submitting a new reco")
+        console.log("submitting a new reco", newReco)
         try {
             const response = await createReco(user, newReco)
             if (response) {
@@ -94,7 +115,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         setGoogleData(null)
         setIsPrivate(false)
         setIsProposed(false)
-
+        setImageUrls([])
 
     }
 
