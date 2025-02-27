@@ -4,7 +4,6 @@ import { createReco } from "../services/recoServices";
 import { GoogleMap, useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 
 
-
 const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const inputRef = useRef(null)
 
@@ -22,10 +21,9 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const [category, setCategory] = useState("food");
     const [address, setAddress] = useState("");
     const [description, setDescription] = useState("");
-    const [googleDescription, setGoogleDescription] = useState("")
     const [isPrivate, setIsPrivate] = useState(false);
     const [isProposed, setIsProposed] = useState(false);
-    const [googleImageUrl, setGoogleImageUrl] = useState("");
+    const [googleObject, setGoogleObject] = useState(null);
 
     const renderSearchBar = () => {
         if (!isLoaded) return;
@@ -55,31 +53,28 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         const placeDetails = inputRef.current.getPlaces()
         // gives the details that has been autofilled
         const placeInfo = placeDetails[0]
+        setGoogleObject(placeInfo);
+        console.log("The google object is: ,", placeInfo.name)
 
         // now set and update any fields in the form
         setTitle(placeInfo.name)
         setAddress(placeInfo.formatted_address)
 
-        // generate a google description string
-        const website = placeInfo.website || "Website not available";
-        const googleMapsUrl = placeInfo.url || "Google Maps link not available";
-        const googleDescString = `📍${googleMapsUrl}\n🌐 ${website}`
-        setGoogleDescription(googleDescString);
-
+        /*
         // extracting the imageURL (google) 
         let imageUrl = "";
         const maxWidth = 400;
         if (placeInfo.photos && placeInfo.photos.length > 0) {
             imageUrl = placeInfo.photos[0].getUrl({ maxWidth: maxWidth });
         }
-        setGoogleImageUrl(imageUrl)
 
+        */
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const uid = user.uid;
-        const newReco = { title, subTitle, category, address, googleDescription, description, isPrivate, isProposed, uid, googleImageUrl }
+        const newReco = { title, subTitle, category, address, description, isPrivate, isProposed, uid, googleObject }
         // TODO: validate entries
         console.log("submitting a new reco")
         try {
@@ -100,11 +95,11 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         setSubTitle("")
         setCategory("food")
         setAddress("")
-        setGoogleDescription("")
         setDescription("")
+        setGoogleObject(null)
         setIsPrivate(false)
         setIsProposed(false)
-        setGoogleImageUrl("")
+
 
     }
 
@@ -186,7 +181,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                 <div className="rightside">
                     <div className="google-description-container">
                         <h4>Google Information</h4>
-                        <p>{googleDescription || "Google data will appear here when a place is selected."}</p>
+                        <p>{googleObject && googleObject.name}</p>
                     </div>
                 </div>
 
