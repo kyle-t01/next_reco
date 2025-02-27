@@ -72,15 +72,18 @@ const RecoBox = ({ reco }) => {
         if (!isViewing) return;
         return (
             <div className="reco-back">
+
                 <div className="back-content">
-                    <h4 className="reco-title" > {recoData.title}</h4>
+                    <div className="edit-button">
+                        <button onClick={() => setIsFormOpen(true)}>Edit</button>
+
+                        <h4 className="reco-title" > {recoData.title}</h4>
+                    </div>
                     <p> {recoData.subTitle}</p>
                     {renderLongDesc()}
                     {renderGoogleDesc()}
                 </div>
-                <div className="edit-button">
-                    <button onClick={() => setIsFormOpen(true)}>Edit</button>
-                </div>
+
 
             </div>
         )

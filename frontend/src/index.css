@@ -239,11 +239,16 @@ code {
 }
 
 .cancel {
-  background: #7f0909;
+  background: #cbb1b1;
 }
 
 .submit {
   background: rgba(32, 143, 26, 0.554);
+  color: rgb(0, 0, 0);
+}
+
+.delete {
+  background: rgba(216, 13, 13, 0.697);
   color: rgb(0, 0, 0);
 }
 
@@ -331,7 +336,22 @@ code {
   white-space: nowrap;
 }
 
-/* hyperlinks */
+/* reco box back */
+.reco-back {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+.edit-button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
 
 .reco-back a {
   color: #ffd700;
@@ -342,4 +362,9 @@ code {
 .reco-back a:hover {
   color: #ffcc00;
   text-decoration: underline;
+}
+
+.reco-back button {
+  background: rgba(219, 220, 218, 0.554);
+  color: rgb(0, 0, 0);
 }
