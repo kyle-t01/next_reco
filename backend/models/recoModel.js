@@ -29,6 +29,9 @@ const recoSchema = new Schema({
     description: {
         type: String,
     },
+    googleDescription: {
+        type: String,
+    },
     isPrivate: {
         type: Boolean,
         default: false,
