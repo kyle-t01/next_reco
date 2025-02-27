@@ -8,9 +8,19 @@ const RecoBox = ({ reco }) => {
     const [isViewing, setIsViewing] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false)
     const [isRecoUpdated, setIsRecoUpdated] = useState(false)
-    const handleRecoUpdated = () => {
+    const [isRecoDeleted, setIsRecoDeleted] = useState(false)
+    const [recoData, setRecoData] = useState(reco);
+
+    const handleRecoUpdated = (updatedReco) => {
         setIsFormOpen(false)
         setIsRecoUpdated(true)
+        setRecoData(updatedReco)
+        return;
+    }
+
+    const handleRecoDeleted = () => {
+        setIsFormOpen(false)
+        setIsRecoDeleted(true)
         // politely ask the user to refresh
         return;
     }
@@ -130,7 +140,7 @@ const RecoBox = ({ reco }) => {
     }
 
     const renderRecoBox = () => {
-        if (isRecoUpdated) return (
+        if (isRecoDeleted) return (
             <div className="reco-box">Reco changed - please refresh page</div>
         );
         return (
@@ -143,7 +153,7 @@ const RecoBox = ({ reco }) => {
 
         <div>
             {renderRecoBox()}
-            <div>{isFormOpen && <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoUpdated={handleRecoUpdated} reco={reco} />}</div>
+            <div>{isFormOpen && <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoUpdated={handleRecoUpdated} onRecoDeleted={handleRecoDeleted} reco={recoData} />}</div>
         </div>
     );
 }
