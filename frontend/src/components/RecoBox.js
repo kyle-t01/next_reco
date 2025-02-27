@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const RecoBox = ({ reco }) => {
 
-    const { title, subTitle, description, googleImageUrl } = reco;
+    const { title, subTitle, description, googleDescription, googleImageUrl } = reco;
     const [isViewing, setIsViewing] = useState(false);
     // shows more details of the Reco
     const handleViewDetails = () => {
@@ -17,7 +17,9 @@ const RecoBox = ({ reco }) => {
         return <div className="reco-front">
             <h4 className="reco-title" > {title}</h4>
             <p> {subTitle}</p>
-            <p> {description.slice(0, 20)}...</p>
+            {googleImageUrl && <p> {description.slice(0, 20)}...</p>}
+            {!googleImageUrl && renderLongDesc()}
+
             {renderImage()}
 
         </div>
@@ -29,8 +31,21 @@ const RecoBox = ({ reco }) => {
         return <div className="reco-back">
             <h4 className="reco-title" > {title}</h4>
             <p> {subTitle}</p>
-            <p> {description}</p>
+            {renderLongDesc()}
+            {renderGoogleDesc()}
+        </div>
+    }
 
+    const renderLongDesc = () => {
+        return <div className="long-desc">
+            <p> {description} </p>
+        </div>
+    }
+
+    const renderGoogleDesc = () => {
+        if (!googleDescription) return;
+        return <div className="google-desc">
+            <p> {googleDescription} </p>
         </div>
     }
 
