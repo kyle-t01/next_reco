@@ -54,14 +54,35 @@ const createReco = async (req, res) => {
 const deleteReco = async (req, res) => {
     // 
     console.log("tried to Delete a Reco")
+    const reco = req.body
 
 }
 
 // PATCH an existing Reco for a user
 const updateReco = async (req, res) => {
-    // 
-    console.log("tried to Update a Reco")
-
+    console.log("### attempting to UPDATE RECO ###")
+    const reco = req.body
+    console.log("The reco to be updated: ", reco)
+    const _id = reco._id
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).json({ error: "Not a valid reco (id)" });
+    }
+    try {
+        // find one and update
+        const updatedReco = await Reco.findOneAndUpdate(
+            { _id: _id },
+            { ...reco },
+            { new: true }
+        );
+        if (!updatedReco) {
+            return res.status(404).json({ error: "Reco not found" });
+        }
+        console.log("success in updating reco")
+        res.status(200).json(updatedReco);
+    } catch (error) {
+        console.error("Error updating reco:", error);
+        res.status(500).json({ error: "Failed to update reco" });
+    }
 }
 
 module.exports = {
