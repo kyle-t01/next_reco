@@ -1,5 +1,5 @@
 // A box containing a summary of basic Reco information
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RecoForm from "./RecoForm";
 
 const RecoBox = ({ reco }) => {
@@ -8,10 +8,14 @@ const RecoBox = ({ reco }) => {
     const [isViewing, setIsViewing] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false)
     const [isRecoDeleted, setIsRecoDeleted] = useState(false)
+    const [isRecoUpdated, setIsRecoUpdated] = useState(false)
     const [recoData, setRecoData] = useState(reco);
+
+
 
     const handleRecoUpdated = (updatedReco) => {
         setIsFormOpen(false)
+        setIsRecoUpdated(true)
         setRecoData(updatedReco)
         return;
     }
@@ -29,6 +33,7 @@ const RecoBox = ({ reco }) => {
     }
 
     const renderFrontBox = () => {
+        if (!recoData) return;
         if (isViewing) return;
         return (<div className="reco-front">
             <h4 className="reco-title" > {recoData.title}</h4>
@@ -46,7 +51,8 @@ const RecoBox = ({ reco }) => {
 
 
     const renderReviews = () => {
-        if (!googleData) return;
+        if (!recoData) return;
+        if (!recoData.googleData) return;
         const { rating, user_ratings_total, price_level } = recoData.googleData;
 
         const price = price_level ? "$".repeat(price_level) : "N/A";
@@ -62,7 +68,7 @@ const RecoBox = ({ reco }) => {
     }
 
     const renderBackBox = () => {
-
+        if (!recoData) return;
         if (!isViewing) return;
         return (
             <div className="reco-back">
@@ -136,8 +142,8 @@ const RecoBox = ({ reco }) => {
     }
 
     const renderRecoBox = () => {
-        if (isRecoDeleted) return (
-            <div className="reco-box">Reco changed - please refresh page</div>
+        if (isRecoUpdated) return (
+            <div className="reco-box">[Reco updated - please refresh page]</div>
         );
         return (
             <div className="reco-box" onClick={handleViewDetails}>{renderFrontBox()}{renderBackBox()}</div>

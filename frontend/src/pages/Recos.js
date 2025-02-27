@@ -62,7 +62,7 @@ const Recos = () => {
     useEffect(() => {
         loadRecos()
 
-    }, [user, activeTab]);
+    }, [user, activeTab, isFormOpen]);
 
     return (
         <div className="recos">
