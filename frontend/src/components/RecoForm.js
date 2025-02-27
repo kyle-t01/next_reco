@@ -18,6 +18,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
 
     const { user } = UserAuth();
     const [title, setTitle] = useState("");
+    const [subTitle, setSubTitle] = useState("");
     const [category, setCategory] = useState("food");
     const [address, setAddress] = useState("");
     const [description, setDescription] = useState("");
@@ -70,7 +71,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const uid = user.uid;
-        const newReco = { title, category, address, description, isPrivate, isProposed, uid, googleImageUrl }
+        const newReco = { title, subTitle, category, address, description, isPrivate, isProposed, uid, googleImageUrl }
         // TODO: validate entries
         console.log("submitting a new reco")
         try {
@@ -88,6 +89,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
 
     const resetForm = () => {
         setTitle("")
+        setSubTitle("")
         setCategory("food")
         setAddress("")
         setDescription("")
@@ -117,6 +119,14 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                />
+                {/* Sub Title */}
+                <label>Sub Title (optional)</label>
+                <input
+                    type="text"
+                    value={subTitle}
+
+                    onChange={(e) => setSubTitle(e.target.value)}
                 />
                 {/* Address */}
                 <label>Address</label>
