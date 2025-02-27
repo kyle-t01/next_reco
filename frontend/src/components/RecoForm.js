@@ -161,7 +161,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                             checked={isProposed}
                             onChange={(e) => setIsProposed(e.target.checked)}
                         />
-                        Proposed: any group member can view it in the tab [Let's do this next!]
+                        Proposed: any group member can view it in the [Let's do this next!] tab
                     </label>
                 </div>
 
