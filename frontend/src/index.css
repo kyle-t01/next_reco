@@ -44,6 +44,11 @@ code {
 
 .reco-box p {
   font-size: 14px;
+  font-weight: bold;
+  margin: 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: rgba(255, 255, 255, 0.8);
   margin: 5px 0;
 }
