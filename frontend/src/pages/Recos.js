@@ -66,10 +66,7 @@ const Recos = () => {
 
     return (
         <div className="recos">
-            <h1>This is where you can see all Recos</h1>
             {renderRecoNavbar()}
-
-
             {renderActiveTab()}
 
             <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} />
