@@ -122,12 +122,17 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const uid = user.uid;
-        const newGoogleData = {
-            ...googleData,
-            imageUrls: imageUrls
-
-
-        };
+        // extract only the fields we want from the google data object
+        const newGoogleData = googleData ? {
+            name: googleData.name || "",
+            price_level: googleData.price_level || null,
+            rating: googleData.rating || null,
+            url: googleData.url || "",
+            website: googleData.website || "",
+            vicinity: googleData.vicinity || "",
+            user_ratings_total: googleData.user_ratings_total || 0,
+            imageUrls: imageUrls || [],
+        } : null;
         const _id = reco?._id
         const newReco = {
             _id,
