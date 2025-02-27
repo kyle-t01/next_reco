@@ -15,7 +15,7 @@ const RecoBox = ({ reco }) => {
 
     const renderFrontBox = () => {
         if (isViewing) return;
-        return <div className="reco-front">
+        return (<div className="reco-front">
             <h4 className="reco-title" > {title}</h4>
             <p> {subTitle}</p>
             {renderShortDesc()}
@@ -24,6 +24,7 @@ const RecoBox = ({ reco }) => {
 
 
         </div>
+        )
     }
 
 
@@ -38,9 +39,9 @@ const RecoBox = ({ reco }) => {
         const hasHalfStar = rating % 1 !== 0;
         return (
             <div className="reco-reviews">
-                <span className="stars">[{rating || "N/A"} {"⭐".repeat(fullStars)}{hasHalfStar ? "+" : ""}]</span>
-                <span className="ratings">({user_ratings_total || "0"} reviews)</span>
-                <span className="price">{price}</span>
+                <div className="stars">{rating || "N/A"} {"⭐".repeat(fullStars)}{hasHalfStar ? "+" : ""}</div>
+                <div className="ratings">({user_ratings_total || "0"} reviews)</div>
+                <div className="price">Price: {price}</div>
             </div>
         )
     }
@@ -48,12 +49,18 @@ const RecoBox = ({ reco }) => {
     const renderBackBox = () => {
 
         if (!isViewing) return;
-        return <div className="reco-back">
-            <h4 className="reco-title" > {title}</h4>
-            <p> {subTitle}</p>
-            {renderLongDesc()}
-            {renderGoogleDesc()}
-        </div>
+        return (
+            <div className="reco-back">
+                <div className="back-content">
+                    <h4 className="reco-title" > {title}</h4>
+                    <p> {subTitle}</p>
+                    {renderLongDesc()}
+                    {renderGoogleDesc()}
+                </div>
+                <div className="edit-button">+EDIT</div>
+
+            </div>
+        )
     }
 
     const renderLongDesc = () => {
@@ -64,7 +71,10 @@ const RecoBox = ({ reco }) => {
 
     const renderShortDesc = () => {
         if (!description) return;
-        return <p> {description.slice(0, 20)}... </p>
+        if (description.length >= 20) {
+            return <p>{description.slice(0, 20)}...</p>
+        }
+        return <p>{description}</p>
 
     }
 
@@ -75,23 +85,36 @@ const RecoBox = ({ reco }) => {
         return (
 
             < div >
-                <h2>{googleData.name}</h2>
-                <p>{googleData.formattedAddress}</p>
-                <p>{googleData.website}</p>
+                <p>
+                    <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleData.vicinity)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        📍 {googleData.vicinity}
+                    </a>
+                </p>
+                {
+                    googleData.website && <a
+                        href={googleData.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        🌐 {googleData.website}
+                    </a>
+                }
             </div >
         )
     }
 
     const renderImage = () => {
-        if (!googleData || !googleData.img_urls) return;
+        // if there was no google data, then there wasn't an image
+        if (!googleData || !googleData.imageUrls) return;
         // for now only render the first image 
-        if (googleData.img_urls.length > 0) {
-            console.log(googleData.img_urls)
-
+        if (googleData.imageUrls.length > 0) {
+            return <img src={googleData.imageUrls[0]} alt={`Google Image `} className="reco-image" />
         }
     }
-
-
 
     return (
         <div className="reco-box" onClick={handleViewDetails} >
