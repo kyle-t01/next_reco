@@ -4,16 +4,14 @@ import RecoForm from "./RecoForm";
 
 const RecoBox = ({ reco }) => {
 
-    const { title, subTitle, description, googleData } = reco;
+
     const [isViewing, setIsViewing] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false)
-    const [isRecoUpdated, setIsRecoUpdated] = useState(false)
     const [isRecoDeleted, setIsRecoDeleted] = useState(false)
     const [recoData, setRecoData] = useState(reco);
 
     const handleRecoUpdated = (updatedReco) => {
         setIsFormOpen(false)
-        setIsRecoUpdated(true)
         setRecoData(updatedReco)
         return;
     }
@@ -21,7 +19,6 @@ const RecoBox = ({ reco }) => {
     const handleRecoDeleted = () => {
         setIsFormOpen(false)
         setIsRecoDeleted(true)
-        // politely ask the user to refresh
         return;
     }
 
@@ -29,14 +26,13 @@ const RecoBox = ({ reco }) => {
     const handleViewDetails = () => {
         if (isFormOpen) return;
         setIsViewing(!isViewing)
-        console.log("Viewing more details of: ", reco.title, " viewing back?: ", isViewing)
     }
 
     const renderFrontBox = () => {
         if (isViewing) return;
         return (<div className="reco-front">
-            <h4 className="reco-title" > {title}</h4>
-            <p> {subTitle}</p>
+            <h4 className="reco-title" > {recoData.title}</h4>
+            <p> {recoData.subTitle}</p>
             {renderShortDesc()}
             {renderImage()}
             {renderReviews()}
@@ -51,7 +47,7 @@ const RecoBox = ({ reco }) => {
 
     const renderReviews = () => {
         if (!googleData) return;
-        const { rating, user_ratings_total, price_level } = googleData;
+        const { rating, user_ratings_total, price_level } = recoData.googleData;
 
         const price = price_level ? "$".repeat(price_level) : "N/A";
         const fullStars = Math.floor(rating);
@@ -71,8 +67,8 @@ const RecoBox = ({ reco }) => {
         return (
             <div className="reco-back">
                 <div className="back-content">
-                    <h4 className="reco-title" > {title}</h4>
-                    <p> {subTitle}</p>
+                    <h4 className="reco-title" > {recoData.title}</h4>
+                    <p> {recoData.subTitle}</p>
                     {renderLongDesc()}
                     {renderGoogleDesc()}
                 </div>
@@ -88,42 +84,42 @@ const RecoBox = ({ reco }) => {
 
     const renderLongDesc = () => {
         return <div className="long-desc">
-            <p> {description} </p>
+            <p> {recoData.description} </p>
         </div>
     }
 
     const renderShortDesc = () => {
-        if (!description) return;
-        if (description.length >= 20) {
-            return <p>{description.slice(0, 20)}...</p>
+        if (!recoData.description) return;
+        if (recoData.description.length >= 20) {
+            return <p>{recoData.description.slice(0, 20)}...</p>
         }
-        return <p>{description}</p>
+        return <p>{recoData.description}</p>
 
     }
 
     const renderGoogleDesc = () => {
 
-        if (!googleData) return;
+        if (!recoData.googleData) return;
 
         return (
 
             < div >
                 <p>
                     <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleData.vicinity)}`}
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(recoData.googleData.vicinity)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        📍 {googleData.vicinity}
+                        📍 {recoData.googleData.vicinity}
                     </a>
                 </p>
                 {
-                    googleData.website && <a
-                        href={googleData.website}
+                    recoData.googleData.website && <a
+                        href={recoData.googleData.website}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        🌐 {googleData.website}
+                        🌐 {recoData.googleData.website}
                     </a>
                 }
             </div >
@@ -132,10 +128,10 @@ const RecoBox = ({ reco }) => {
 
     const renderImage = () => {
         // if there was no google data, then there wasn't an image
-        if (!googleData || !googleData.imageUrls) return;
+        if (!recoData.googleData || !recoData.googleData.imageUrls) return;
         // for now only render the first image 
-        if (googleData.imageUrls.length > 0) {
-            return <img src={googleData.imageUrls[0]} alt={`Google Image `} className="reco-image" />
+        if (recoData.googleData.imageUrls.length > 0) {
+            return <img src={recoData.googleData.imageUrls[0]} alt={`Google Image `} className="reco-image" />
         }
     }
 
@@ -148,8 +144,10 @@ const RecoBox = ({ reco }) => {
         );
     }
 
-    return (
+    // if the recodata is deleted, then return null
+    if (isRecoDeleted) return null;
 
+    return (
 
         <div>
             {renderRecoBox()}
