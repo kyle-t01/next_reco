@@ -11,16 +11,16 @@ router.use(authMW)
 router.get('/', getRecos)
 
 // GET a Reco
-router.get('/:id', getReco)
+router.get('/', getReco)
 
 // POST a new Reco
 router.post('/', createReco)
 
 // PATCH an existing Reco
-router.patch('/:id', updateReco)
+router.patch('/', updateReco)
 
 // DELETE a Reco
-router.delete('/:id', deleteReco)
+router.delete('/', deleteReco)
 
 
 module.exports = router;
