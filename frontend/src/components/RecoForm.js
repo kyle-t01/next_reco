@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
-import { createReco, updateReco } from "../services/recoServices";
+import { createReco, updateReco, deleteReco } from "../services/recoServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 
 
@@ -90,6 +90,30 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
     }
 
+    const handleDelete = async (e) => {
+        e.preventDefault()
+        const uid = user.uid;
+        const _id = reco?._id
+        const newReco = {
+            _id,
+        };
+        console.log("deleting some recos")
+        try {
+            if (updateMode) {
+                console.log("Updating reco:", newReco);
+                await deleteReco(user, newReco);
+                onRecoDeleted()
+
+            }
+
+            onClose();
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const uid = user.uid;
@@ -129,7 +153,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
             onClose();
         } catch (error) {
-
+            console.log(error)
         }
 
 
@@ -220,7 +244,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                             <button type="button" className="cancel" onClick={onClose}>Cancel</button>
                             <button type="submit" className="submit" onClick={handleSubmit}>{updateMode ? "Update Reco" : "Add Reco"}</button>
                         </div>
+                        {<div className="button-group">
 
+                            <button type="delete" className="delete" onClick={handleDelete}>DELETE RECO</button>
+                        </div>}
                     </form>
                 </div>
                 <div className="rightside">

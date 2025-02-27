@@ -13,8 +13,6 @@ const getRecos = async (req, res) => {
 
     let filter = { ...req.query };
 
-    console.log()
-
     try {
         const recos = await Reco.find(filter).sort({ createdAt: -1 })
         res.status(200).json(recos)
@@ -52,9 +50,27 @@ const createReco = async (req, res) => {
 
 // DELETE a Reco for a user
 const deleteReco = async (req, res) => {
-    // 
-    console.log("tried to Delete a Reco")
-    const reco = req.body
+    console.log("### DELETE A RECO OF A USER ###")
+    if (!req || !req.query) {
+        return res.status(400).json({ error: "deleteReco: missing reco _id" });
+    }
+    const { _id } = req.query;
+    console.log(_id)
+    try {
+        // find one and delete
+        const deletedReco = await Reco.findOneAndDelete(
+            { _id: _id }
+        );
+        if (!deleteReco) {
+            return res.status(404).json({ error: "Reco not found" });
+        }
+        console.log("success in deleting reco")
+        res.status(200).json(deletedReco);
+    } catch (error) {
+        console.error("Error deleting reco:", error);
+        res.status(500).json({ error: "Failed to delete reco" });
+    }
+
 
 }
 

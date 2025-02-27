@@ -75,8 +75,12 @@ export const createReco = async (user, newReco) => {
 }
 
 export const updateReco = async (user, newReco) => {
-    console.log("testing update reco, ", newReco)
-    const data = await fetchRecos(user, "PATCH", newReco, { _id: newReco._id });
+    const data = await fetchRecos(user, "PATCH", newReco);
     return data;
 }
 
+export const deleteReco = async (user, reco) => {
+    console.log("testing deleting a reco, ", reco)
+    const data = await fetchRecos(user, "DELETE", null, { _id: reco._id });
+    return data;
+}
