@@ -48,6 +48,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             // resetForm();
             setUpdateMode(false);
         }
+        console.log("update mode is: ", updateMode)
     }, [reco]);
 
     const renderSearchBar = () => {
@@ -113,6 +114,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
     }
 
+    const renderDeleteButton = () => {
+        if (updateMode) return <button type="delete" className="delete" onClick={handleDelete}>DELETE RECO</button>;
+
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -245,8 +250,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                             <button type="submit" className="submit" onClick={handleSubmit}>{updateMode ? "Update Reco" : "Add Reco"}</button>
                         </div>
                         {<div className="button-group">
-
-                            <button type="delete" className="delete" onClick={handleDelete}>DELETE RECO</button>
+                            {renderDeleteButton()}
                         </div>}
                     </form>
                 </div>
