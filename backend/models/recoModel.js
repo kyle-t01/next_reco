@@ -13,6 +13,10 @@ const recoSchema = new Schema({
 
         required: true
     },
+    subTitle: {
+        type: String,
+
+    },
     category: {
         type: String,
         enum: ["food", "non-food"],
