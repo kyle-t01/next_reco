@@ -311,3 +311,35 @@ code {
   padding: 12px;
   cursor: pointer;
 }
+
+/* */
+.reco-reviews {
+  display: flex;
+
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: white;
+  margin-top: 5px;
+  justify-content: center;
+}
+
+.reco-reviews .stars,
+.reco-reviews .ratings,
+.reco-reviews .price {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* hyperlinks */
+
+.reco-back a {
+  color: #ffd700;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.reco-back a:hover {
+  color: #ffcc00;
+  text-decoration: underline;
+}
