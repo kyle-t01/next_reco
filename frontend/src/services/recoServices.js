@@ -32,7 +32,7 @@ const fetchRecos = async (user, method, body = null, queryParams = {}) => {
         // construct the query string
         const queryStr = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:4000/api/recos${queryStr ? `?${queryStr}` : ""}`;
-
+        console.log("url: ", url)
         const response = await fetch(url, requestOptions);
 
 
@@ -73,3 +73,10 @@ export const createReco = async (user, newReco) => {
     const data = await fetchRecos(user, "POST", newReco);
     return data;
 }
+
+export const updateReco = async (user, newReco) => {
+    console.log("testing update reco, ", newReco)
+    const data = await fetchRecos(user, "PATCH", newReco, { _id: newReco._id });
+    return data;
+}
+
