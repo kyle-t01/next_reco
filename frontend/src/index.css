@@ -37,7 +37,7 @@ code {
 
 .reco-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 10px;
   padding: 10px;
   justify-content: center;
@@ -53,8 +53,8 @@ code {
   color: white;
   overflow: hidden;
   width: 100%;
-  max-width: 220px;
-  height: 280px;
+  max-width: 300px;
+  height: 300px;
   cursor: pointer;
 }
 
