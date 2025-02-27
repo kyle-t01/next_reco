@@ -43,6 +43,9 @@ const recoSchema = new Schema({
     googleImageUrl: {
         type: String,
     },
+    googleData: {
+        type: Object
+    },
     uid: {
         type: String,
         required: true,
