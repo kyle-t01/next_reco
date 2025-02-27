@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
-import { createReco } from "../services/recoServices";
+import { createReco, updateReco } from "../services/recoServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 
 
@@ -16,15 +16,21 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
 
 
     const { user } = UserAuth();
-    const [title, setTitle] = useState(reco?.title || "");
-    const [subTitle, setSubTitle] = useState(reco?.subTitle || "");
-    const [category, setCategory] = useState(reco?.category || "food");
-    const [address, setAddress] = useState(reco?.address || "");
-    const [description, setDescription] = useState(reco?.description || "");
-    const [isPrivate, setIsPrivate] = useState(reco?.isPrivate || false);
-    const [isProposed, setIsProposed] = useState(reco?.isProposed || false);
-    const [imageUrls, setImageUrls] = useState(reco?.googleData?.imageUrls || []);
-    const [googleData, setGoogleData] = useState(reco?.googleData || null);
+
+
+    // updateMode TRUE->PATCH, FALSE->POST
+    const [updateMode, setUpdateMode] = useState(false);
+
+    const [title, setTitle] = useState("");
+    const [subTitle, setSubTitle] = useState("");
+    const [category, setCategory] = useState("food");
+    const [address, setAddress] = useState("");
+    const [description, setDescription] = useState("");
+    const [isPrivate, setIsPrivate] = useState(false);
+    const [isProposed, setIsProposed] = useState(false);
+    const [imageUrls, setImageUrls] = useState([]);
+    const [googleData, setGoogleData] = useState(null);
+
 
     useEffect(() => {
         if (reco) {
@@ -37,6 +43,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
             setIsProposed(reco.isProposed);
             setImageUrls(reco.googleData?.imageUrls || []);
             setGoogleData(reco.googleData || null);
+            setUpdateMode(true);
+        } else {
+            // resetForm();
+            setUpdateMode(false);
         }
     }, [reco]);
 
@@ -46,14 +56,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
         return <div>
             <StandaloneSearchBox
                 onLoad={(ref) => inputRef.current = ref}
-                onPlacesChanged={handleOnPlacesChanged}
-            >
+                onPlacesChanged={handleOnPlacesChanged}>
                 <input
                     type="text"
-                    placehoder="Search for a place..."
-
-
-
+                    placeholder="Search for a place..."
                 />
             </StandaloneSearchBox>
         </div>
@@ -93,7 +99,9 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
 
 
         };
+        const _id = reco._id
         const newReco = {
+            _id,
             title,
             subTitle,
             category,
@@ -108,11 +116,16 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
         // TODO: validate entries
         console.log("submitting a new reco", newReco)
         try {
-            const response = await createReco(user, newReco)
-            if (response) {
-                onRecoAdded();
-                onClose();
+            if (updateMode) {
+                console.log("Updating reco:", newReco);
+                await updateReco(user, newReco);
+            } else {
+                console.log("Creating new reco:", newReco);
+                await createReco(user, newReco);
             }
+            // recoAdded is called wwhen updating or creating
+            onRecoAdded();
+            onClose();
         } catch (error) {
 
         }
@@ -140,7 +153,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
     return (
         <div className="modal-form" >
             <div className="form-header">
-                <h3>Add a New Reco</h3>
+                <h3>{updateMode ? "Update Reco" : "Add A New Reco"}</h3>
                 <button className="close" onClick={resetForm}>[reset]</button>
             </div>
             <div className="input-container">
@@ -203,7 +216,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
                         {/* buttons */}
                         <div className="button-group">
                             <button type="button" className="cancel" onClick={onClose}>Cancel</button>
-                            <button type="submit" className="submit" onClick={handleSubmit}>Add Reco</button>
+                            <button type="submit" className="submit" onClick={handleSubmit}>{updateMode ? "Update Reco" : "Add Reco"}</button>
                         </div>
 
                     </form>
