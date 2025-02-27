@@ -30,6 +30,10 @@ code {
   text-align: center;
   color: white;
   overflow: hidden;
+  width: 100%;
+  max-width: 220px;
+  height: 280px;
+  cursor: pointer;
 }
 
 .reco-box h4 {
@@ -53,27 +57,8 @@ code {
   margin: 5px 0;
 }
 
-/* reco instructions */
-.reco-instructions {
-  text-align: center;
-  font-size: 18px;
-  /* Increased font size */
-  font-weight: bold;
-  /* Makes it stand out */
-  color: rgba(255, 255, 255, 0.9);
-  /* Slightly brighter for emphasis */
-  margin: 15px 0;
-  padding: 10px;
-  border: 2px dashed rgba(255, 255, 255, 0.5);
-  /* Subtle dashed border */
-  background: rgba(255, 255, 255, 0.1);
-  /* Slight background highlight */
-  border-radius: 8px;
-}
-
 
 /* reco instructions */
-
 .reco-instructions {
   text-align: center;
   font-weight: bold;
@@ -205,6 +190,8 @@ code {
   border-radius: 8px;
   display: block;
 }
+
+
 
 /* navbar */
 .navbar {
