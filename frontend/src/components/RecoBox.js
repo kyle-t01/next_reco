@@ -5,11 +5,19 @@ import RecoForm from "./RecoForm";
 const RecoBox = ({ reco }) => {
 
     const { title, subTitle, description, googleData } = reco;
-    console.log(reco)
     const [isViewing, setIsViewing] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false)
+    const [isRecoUpdated, setIsRecoUpdated] = useState(false)
+    const handleRecoUpdated = () => {
+        setIsFormOpen(false)
+        setIsRecoUpdated(true)
+        // politely ask the user to refresh
+        return;
+    }
+
     // shows more details of the Reco
     const handleViewDetails = () => {
+        if (isFormOpen) return;
         setIsViewing(!isViewing)
         console.log("Viewing more details of: ", reco.title, " viewing back?: ", isViewing)
     }
@@ -121,13 +129,21 @@ const RecoBox = ({ reco }) => {
         }
     }
 
-    if (isFormOpen) return <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={{}} reco={reco} />;
+    const renderRecoBox = () => {
+        if (isRecoUpdated) return (
+            <div className="reco-box">Reco changed - please refresh page</div>
+        );
+        return (
+            <div className="reco-box" onClick={handleViewDetails}>{renderFrontBox()}{renderBackBox()}</div>
+        );
+    }
 
     return (
-        <div className="reco-box" onClick={handleViewDetails} >
 
-            {renderFrontBox()}
-            {renderBackBox()}
+
+        <div>
+            {renderRecoBox()}
+            <div>{isFormOpen && <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoUpdated={handleRecoUpdated} reco={reco} />}</div>
         </div>
     );
 }
