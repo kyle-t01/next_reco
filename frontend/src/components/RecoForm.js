@@ -93,7 +93,6 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
     const handleDelete = async (e) => {
         e.preventDefault()
-        const uid = user.uid;
         const _id = reco?._id
         const newReco = {
             _id,
