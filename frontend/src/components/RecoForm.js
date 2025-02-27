@@ -1,10 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
 import { createReco } from "../services/recoServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 
 
-const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
+const RecoForm = ({ isOpen, onClose, onRecoAdded, reco }) => {
     const inputRef = useRef(null)
 
     // load the google maps api
@@ -16,15 +16,29 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
 
 
     const { user } = UserAuth();
-    const [title, setTitle] = useState("");
-    const [subTitle, setSubTitle] = useState("");
-    const [category, setCategory] = useState("food");
-    const [address, setAddress] = useState("");
-    const [description, setDescription] = useState("");
-    const [isPrivate, setIsPrivate] = useState(false);
-    const [isProposed, setIsProposed] = useState(false);
-    const [imageUrls, setImageUrls] = useState([]);
-    const [googleData, setGoogleData] = useState(null);
+    const [title, setTitle] = useState(reco?.title || "");
+    const [subTitle, setSubTitle] = useState(reco?.subTitle || "");
+    const [category, setCategory] = useState(reco?.category || "food");
+    const [address, setAddress] = useState(reco?.address || "");
+    const [description, setDescription] = useState(reco?.description || "");
+    const [isPrivate, setIsPrivate] = useState(reco?.isPrivate || false);
+    const [isProposed, setIsProposed] = useState(reco?.isProposed || false);
+    const [imageUrls, setImageUrls] = useState(reco?.googleData?.imageUrls || []);
+    const [googleData, setGoogleData] = useState(reco?.googleData || null);
+
+    useEffect(() => {
+        if (reco) {
+            setTitle(reco.title);
+            setSubTitle(reco.subTitle);
+            setCategory(reco.category);
+            setAddress(reco.address);
+            setDescription(reco.description);
+            setIsPrivate(reco.isPrivate);
+            setIsProposed(reco.isProposed);
+            setImageUrls(reco.googleData?.imageUrls || []);
+            setGoogleData(reco.googleData || null);
+        }
+    }, [reco]);
 
     const renderSearchBar = () => {
         if (!isLoaded) return;
@@ -60,7 +74,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
 
         // now set and update any fields in the form
         setTitle(placeInfo.name)
-        setAddress(placeInfo.formatted_address)
+        setAddress(placeInfo.vicinity)
 
         let urls = [];
         if (placeInfo.photos && placeInfo.photos.length > 0) {
