@@ -151,7 +151,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                             checked={isPrivate}
                             onChange={(e) => setIsPrivate(e.target.checked)}
                         />
-                        Private
+                        Private: only visible to you
                     </label>
                     {/* isProposed */}
                     <label>
@@ -161,7 +161,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                             checked={isProposed}
                             onChange={(e) => setIsProposed(e.target.checked)}
                         />
-                        Proposed
+                        Proposed: any group member can view it in the tab [Let's do this next!]
                     </label>
                 </div>
 

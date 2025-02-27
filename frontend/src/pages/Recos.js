@@ -54,7 +54,7 @@ const Recos = () => {
         return < div className="reco-navbar" >
             <button onClick={() => switchToTab(0)}>Personal</button>
             <button onClick={() => switchToTab(1)}>Group</button>
-            <button onClick={() => switchToTab(2)}>Do this next</button>
+            <button onClick={() => switchToTab(2)}>Let's do this next!</button>
             <button onClick={() => setIsFormOpen(true)}>+ Add Reco</button>
         </div >
     };
