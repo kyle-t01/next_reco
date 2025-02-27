@@ -22,6 +22,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const [category, setCategory] = useState("food");
     const [address, setAddress] = useState("");
     const [description, setDescription] = useState("");
+    const [googleDescription, setGoogleDescription] = useState("")
     const [isPrivate, setIsPrivate] = useState(false);
     const [isProposed, setIsProposed] = useState(false);
     const [googleImageUrl, setGoogleImageUrl] = useState("");
@@ -39,13 +40,18 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                     placehoder="Search for a place..."
 
 
+
                 />
             </StandaloneSearchBox>
         </div>
     }
 
     const handleOnPlacesChanged = () => {
-        if (!inputRef) return;
+        if (!inputRef) {
+            resetForm()
+            return;
+        }
+
         const placeDetails = inputRef.current.getPlaces()
         // gives the details that has been autofilled
         const placeInfo = placeDetails[0]
@@ -53,10 +59,12 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         // now set and update any fields in the form
         setTitle(placeInfo.name)
         setAddress(placeInfo.formatted_address)
+
+        // generate a google description string
         const website = placeInfo.website || "Website not available";
         const googleMapsUrl = placeInfo.url || "Google Maps link not available";
-        const descString = `📍${googleMapsUrl}\n🌐 ${website}`
-        setDescription(descString);
+        const googleDescString = `📍${googleMapsUrl}\n🌐 ${website}`
+        setGoogleDescription(googleDescString);
 
         // extracting the imageURL (google) 
         let imageUrl = "";
@@ -71,7 +79,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const uid = user.uid;
-        const newReco = { title, subTitle, category, address, description, isPrivate, isProposed, uid, googleImageUrl }
+        const newReco = { title, subTitle, category, address, googleDescription, description, isPrivate, isProposed, uid, googleImageUrl }
         // TODO: validate entries
         console.log("submitting a new reco")
         try {
@@ -92,6 +100,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
         setSubTitle("")
         setCategory("food")
         setAddress("")
+        setGoogleDescription("")
         setDescription("")
         setIsPrivate(false)
         setIsProposed(false)
@@ -109,69 +118,80 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded }) => {
                 <h3>Add a New Reco</h3>
                 <button className="close" onClick={resetForm}>[reset]</button>
             </div>
-
-            <form>
-                {/* Search Bar */}
-                {renderSearchBar()}
-                {/* Title */}
-                <label>Title</label>
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                {/* Sub Title */}
-                <label>Sub Title (optional)</label>
-                <input
-                    type="text"
-                    value={subTitle}
-
-                    onChange={(e) => setSubTitle(e.target.value)}
-                />
-                {/* Address */}
-                <label>Address</label>
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-                {/* Description */}
-                <label>Description</label>
-                <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
-                {/* isPrivate */}
-                <div className="checkboxes">
-                    <label>
-
+            <div className="input-container">
+                <div className="leftside">
+                    <form>
+                        {/* Search Bar */}
+                        {renderSearchBar()}
+                        {/* Title */}
+                        <label>Title</label>
                         <input
-                            type="checkbox"
-                            checked={isPrivate}
-                            onChange={(e) => setIsPrivate(e.target.checked)}
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                         />
-                        Private: only visible to you
-                    </label>
-                    {/* isProposed */}
-                    <label>
-
+                        {/* Sub Title */}
+                        <label>Sub Title (optional)</label>
                         <input
-                            type="checkbox"
-                            checked={isProposed}
-                            onChange={(e) => setIsProposed(e.target.checked)}
+                            type="text"
+                            value={subTitle}
+
+                            onChange={(e) => setSubTitle(e.target.value)}
                         />
-                        Proposed: any group member can view it in the [Let's do this next!] tab
-                    </label>
+                        {/* Address */}
+                        <label>Address</label>
+                        <input
+                            type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
+                        {/* Description */}
+                        <label>Description</label>
+                        <input
+                            type="text"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                        {/* isPrivate */}
+                        <div className="checkboxes">
+                            <label>
+
+                                <input
+                                    type="checkbox"
+                                    checked={isPrivate}
+                                    onChange={(e) => setIsPrivate(e.target.checked)}
+                                />
+                                Private: hide it from the [Group] tab
+                            </label>
+                            {/* isProposed */}
+                            <label>
+
+                                <input
+                                    type="checkbox"
+                                    checked={isProposed}
+                                    onChange={(e) => setIsProposed(e.target.checked)}
+                                />
+                                Proposed: any group member can view it in the [Let's do this next!] tab
+                            </label>
+                        </div>
+
+                        {/* buttons */}
+                        <div className="button-group">
+                            <button type="button" className="cancel" onClick={onClose}>Cancel</button>
+                            <button type="submit" className="submit" onClick={handleSubmit}>Add Reco</button>
+                        </div>
+
+                    </form>
+                </div>
+                <div className="rightside">
+                    <div className="google-description-container">
+                        <h4>Google Information</h4>
+                        <p>{googleDescription || "Google data will appear here when a place is selected."}</p>
+                    </div>
                 </div>
 
-                {/* buttons */}
-                <div className="button-group">
-                    <button type="button" className="cancel" onClick={onClose}>Cancel</button>
-                    <button type="submit" className="submit" onClick={handleSubmit}>Add Reco</button>
-                </div>
+            </div>
 
-            </form>
         </div>
     );
 }
