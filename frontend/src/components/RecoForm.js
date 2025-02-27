@@ -93,6 +93,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
     const handleDelete = async (e) => {
         e.preventDefault()
+
         const _id = reco?._id
         const newReco = {
             _id,
@@ -114,7 +115,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     }
 
     const renderDeleteButton = () => {
-        if (updateMode) return <button type="delete" className="delete" onClick={handleDelete}>DELETE RECO</button>;
+        if (updateMode) return <button type="delete" className="delete" onClick={handleDelete}>Delete</button>;
 
     }
 
@@ -246,7 +247,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                         {/* buttons */}
                         <div className="button-group">
                             <button type="button" className="cancel" onClick={onClose}>Cancel</button>
-                            <button type="submit" className="submit" onClick={handleSubmit}>{updateMode ? "Update Reco" : "Add Reco"}</button>
+                            <button type="submit" className="submit" onClick={handleSubmit}>{updateMode ? "Update" : "Add"}</button>
                         </div>
                         {<div className="button-group">
                             {renderDeleteButton()}

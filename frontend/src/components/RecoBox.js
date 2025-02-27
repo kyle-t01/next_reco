@@ -79,7 +79,7 @@ const RecoBox = ({ reco }) => {
                     {renderGoogleDesc()}
                 </div>
                 <div className="edit-button">
-                    <button onClick={() => setIsFormOpen(true)}>[Edit]</button>
+                    <button onClick={() => setIsFormOpen(true)}>Edit</button>
                 </div>
 
             </div>
@@ -125,7 +125,7 @@ const RecoBox = ({ reco }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        🌐 {recoData.googleData.website}
+                        🌐 {recoData.googleData.title} Website
                     </a>
                 }
             </div >
