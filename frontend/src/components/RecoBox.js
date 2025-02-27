@@ -1,12 +1,13 @@
 // A box containing a summary of basic Reco information
 import { useState } from "react";
-
+import RecoForm from "./RecoForm";
 
 const RecoBox = ({ reco }) => {
 
     const { title, subTitle, description, googleData } = reco;
     console.log(reco)
     const [isViewing, setIsViewing] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false)
     // shows more details of the Reco
     const handleViewDetails = () => {
         setIsViewing(!isViewing)
@@ -57,11 +58,15 @@ const RecoBox = ({ reco }) => {
                     {renderLongDesc()}
                     {renderGoogleDesc()}
                 </div>
-                <div className="edit-button">+EDIT</div>
+                <div className="edit-button">
+                    <button onClick={() => setIsFormOpen(true)}>[Edit]</button>
+                </div>
 
             </div>
         )
     }
+
+
 
     const renderLongDesc = () => {
         return <div className="long-desc">
@@ -116,8 +121,11 @@ const RecoBox = ({ reco }) => {
         }
     }
 
+    if (isFormOpen) return <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={{}} reco={reco} />;
+
     return (
         <div className="reco-box" onClick={handleViewDetails} >
+
             {renderFrontBox()}
             {renderBackBox()}
         </div>
