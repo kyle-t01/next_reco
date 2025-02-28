@@ -368,3 +368,21 @@ code {
   background: rgba(219, 220, 218, 0.554);
   color: rgb(0, 0, 0);
 }
+
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+  text-align: center;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+  text-align: center;
+}
