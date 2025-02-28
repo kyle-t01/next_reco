@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
 import { createReco, updateReco, deleteReco } from "../services/recoServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
-
+import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
 
 const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco }) => {
     const inputRef = useRef(null)
@@ -11,7 +11,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_PLACES_API_KEY,
-        libraries: ["places"]
+        libraries: GOOGLE_MAPS_LIBRARIES,
     });
 
 
