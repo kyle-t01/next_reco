@@ -30,6 +30,8 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     const [isProposed, setIsProposed] = useState(false);
     const [imageUrls, setImageUrls] = useState([]);
     const [googleData, setGoogleData] = useState(null);
+    const [isValidSearch, setIsValidSearch] = useState(null);
+
 
 
     useEffect(() => {
@@ -45,10 +47,11 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             setGoogleData(reco.googleData || null);
             setUpdateMode(true);
         } else {
-            // resetForm();
+            resetForm();
             setUpdateMode(false);
         }
         console.log("update mode is: ", updateMode)
+        setIsValidSearch(!!reco)
     }, [reco]);
 
     const renderSearchBar = () => {
@@ -71,8 +74,13 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             resetForm()
             return;
         }
+        const placeDetails = inputRef.current?.getPlaces();
 
-        const placeDetails = inputRef.current.getPlaces()
+        if (!placeDetails || placeDetails.length === 0) {
+            setIsValidSearch(false);
+            return;
+        }
+
         // gives the details that has been autofilled
         console.log(placeDetails)
         const placeInfo = placeDetails[0]
@@ -121,6 +129,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (!title || !address || !isValidSearch) {
+            alert("Please enter a valid place with a title and address.");
+            return;
+        }
         const uid = user.uid;
         // extract only the fields we want from the google data object
         const newGoogleData = googleData ? {
@@ -199,6 +211,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     }
     const renderGoogleReviews = () => {
         if (!googleData) return <p></p>
+
         const { rating, user_ratings_total, price_level } = googleData;
 
         const price = price_level ? "$".repeat(price_level) : "N/A";
@@ -228,7 +241,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
         return (
 
-            <div>
+            <div className="reco-back">
                 <p>
                     <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleData.vicinity)}`}
@@ -264,7 +277,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                         {/* Search Bar */}
                         {renderSearchBar()}
                         {/* Title */}
-                        <label>Title</label>
+                        <label>Title (required)</label>
                         <input
                             type="text"
                             value={title}
@@ -279,7 +292,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                             onChange={(e) => setSubTitle(e.target.value)}
                         />
                         {/* Address */}
-                        <label>Address</label>
+                        <label>Address (required)</label>
                         <input
                             type="text"
                             value={address}
