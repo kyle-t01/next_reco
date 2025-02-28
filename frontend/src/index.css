@@ -171,6 +171,11 @@ code {
   background-color: #d4ad80;
 }
 
+.modal-form textarea {
+  height: 100px;
+  resize: vertical;
+}
+
 .input-container {
   display: flex;
   gap: 20px;

@@ -313,7 +313,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                         />
                         {/* Description */}
                         <label>Description</label>
-                        <input
+                        <textarea
                             type="text"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
