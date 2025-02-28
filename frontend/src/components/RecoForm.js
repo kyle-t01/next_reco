@@ -35,6 +35,8 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
 
     useEffect(() => {
+
+
         if (reco) {
             setTitle(reco.title);
             setSubTitle(reco.subTitle);
@@ -78,16 +80,14 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
         if (!placeDetails || placeDetails.length === 0) {
             setIsValidSearch(false);
+            resetForm()
             return;
         }
 
         // gives the details that has been autofilled
-        console.log(placeDetails)
+
         const placeInfo = placeDetails[0]
         setGoogleData(placeInfo);
-        console.log("The google data name is: ,", placeInfo.name)
-
-        // now set and update any fields in the form
         setTitle(placeInfo.name)
         setAddress(placeInfo.vicinity)
 
@@ -96,7 +96,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             urls = placeInfo.photos.map(photo => photo.getUrl({ maxWidth: 400 }));
         }
         setImageUrls(urls)
-
+        setIsValidSearch(true);
     }
 
     const handleDelete = async (e) => {
@@ -115,10 +115,16 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
             }
 
-            onClose();
+            handleClose();
         } catch (error) {
             console.log(error)
         }
+
+    }
+
+    const handleClose = () => {
+        resetForm();
+        onClose();
 
     }
 
@@ -169,11 +175,12 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             } else {
                 console.log("Creating new reco:", newReco);
                 await createReco(user, newReco);
+                reco = null
                 onRecoAdded();
             }
             // recoAdded is called wwhen updating or creating
 
-            onClose();
+            handleClose ();
         } catch (error) {
             console.log(error)
         }
@@ -191,7 +198,13 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         setIsPrivate(false)
         setIsProposed(false)
         setImageUrls([])
+        setIsValidSearch(false);
 
+        // reset input ref
+        if (inputRef.current) {
+            inputRef.current.value = "";
+        }
+        inputRef.current = null;
     }
 
     if (!isOpen) return null;
@@ -330,7 +343,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
                         {/* buttons */}
                         <div className="button-group">
-                            <button type="button" className="cancel" onClick={onClose}>Cancel</button>
+                            <button type="button" className="cancel" onClick={handleClose}>Cancel</button>
                             <button type="submit" className="submit" onClick={handleSubmit}>{updateMode ? "Update" : "Add"}</button>
                         </div>
                         {<div className="button-group">
