@@ -3,10 +3,6 @@
 
 const fetchRecos = async (user, method, body = null, queryParams = {}) => {
 
-    console.log("fetching Recos for user: ", user.uid, " via: ", method)
-
-
-
     try {
         // get current id token of user
         const idToken = await user.getIdToken();
