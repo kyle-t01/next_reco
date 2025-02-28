@@ -185,6 +185,72 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     if (!isOpen) return null;
 
 
+    const renderGoogleDesc = () => {
+        if (!googleData) return <p></p>
+        return (
+            <div className="google-description-container">
+                <h4>Google Information</h4>
+                <p>{googleData.name}</p>
+                {renderGoogleImage()}
+                {renderGoogleReviews()}
+                {renderGoogleLinks()}
+            </div>
+        )
+    }
+    const renderGoogleReviews = () => {
+        if (!googleData) return <p></p>
+        const { rating, user_ratings_total, price_level } = googleData;
+
+        const price = price_level ? "$".repeat(price_level) : "N/A";
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 !== 0;
+        return (
+            <div className="reco-reviews">
+                <div className="stars">{rating || "N/A"} {"⭐".repeat(fullStars)}{hasHalfStar ? "+" : ""}</div>
+                <div className="ratings">({user_ratings_total || "0"} reviews)</div>
+                <div className="price">Price: {price}</div>
+            </div>
+        )
+    }
+
+    const renderGoogleImage = () => {
+        if (!googleData || !imageUrls) {
+            return;
+        }
+        if (imageUrls.length > 0) {
+            return <img src={imageUrls[0]} alt={`Google Image `} className="reco-image" />
+        }
+    }
+
+
+    const renderGoogleLinks = () => {
+        if (!googleData) return;
+
+        return (
+
+            <div>
+                <p>
+                    <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleData.vicinity)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        📍 {googleData.vicinity}
+                    </a>
+                </p>
+                {
+                    googleData.website && <a
+                        href={googleData.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        🌐 {googleData.title} Website
+                    </a>
+                }
+            </div>
+        )
+    }
+
 
     return (
         <div className="modal-form" >
@@ -260,10 +326,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                     </form>
                 </div>
                 <div className="rightside">
-                    <div className="google-description-container">
-                        <h4>Google Information</h4>
-                        <p>{googleData && googleData.name}</p>
-                    </div>
+                    {renderGoogleDesc()}
                 </div>
 
             </div>
