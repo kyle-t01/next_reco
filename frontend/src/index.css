@@ -160,11 +160,15 @@ code {
 }
 
 
-.modal-form input {
+.modal-form input,
+.modal-form textarea {
   border: 1px solid #120101;
   padding: 12px;
   font-size: 16px;
   width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #d4ad80;
 }
 
 .input-container {
