@@ -31,7 +31,7 @@ const fetchRecos = async (user, method, body = null, queryParams = {}) => {
 
         // construct the query string
         const queryStr = new URLSearchParams(queryParams).toString();
-        const url = `http://localhost:4000/api/recos${queryStr ? `?${queryStr}` : ""}`;
+        const url = `https://next-reco-app.onrender.com/api/recos${queryStr ? `?${queryStr}` : ""}`;
         console.log("url: ", url)
         const response = await fetch(url, requestOptions);
 
