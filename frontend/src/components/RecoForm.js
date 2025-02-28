@@ -180,7 +180,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             }
             // recoAdded is called wwhen updating or creating
 
-            handleClose ();
+            handleClose();
         } catch (error) {
             console.log(error)
         }
