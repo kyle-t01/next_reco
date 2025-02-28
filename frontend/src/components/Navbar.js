@@ -17,7 +17,11 @@ const Navbar = () => {
 
     return (
         <div className="navbar">
-            <h1>NextReco</h1>
+            <div className="welcome">
+                <h1>NextReco</h1>
+                {user && <h1>Welcome back, {user && user.displayName}!</h1>}
+            </div>
+
             {user ? <button onClick={handleLogOut}>Logout</button> : <Link to='/signin'>Sign In</Link>}
         </div>
     )
