@@ -69,7 +69,7 @@ const Recos = () => {
             {renderRecoNavbar()}
             {renderActiveTab()}
 
-            <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} />
+            <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} reco={null} />
         </div>
     );
 }
