@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# NextReco: Let's Do This Next!
+**NextReco** is a full-stack **MERN app** where you can organise and share recommendations ("Recos") in food and activities to do with friends, eliminating the need for endless reposting and time consuming searches of recommendations in group chats.
+This Project is deployed and being actively maintained!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Core Features
+- Search locations using the Google Places API
+- Google Sign Up/Log In via Firebase Authentication
+- Post, Edit, and Share Recommendations ("Recos") to the group
 
-## Available Scripts
+## Requirements
+### Functional
+- Users can sign up and log in securely via Firebase Authentication
+- Users can post, view, edit, and delete recommendations ("Recos")
+- Users can make Recos private or propose to a shared group
+- Users can search for locations using the Google Places API 
 
-In the project directory, you can run:
+### Non-Functional
+- UI must be intuitive and responsive
+- Backend must be able to handle at least 10 users within <3 second delay
+- The application needs to be available at least 16 hours a day
 
-### `npm start`
+## Technologies Used
+- **MongoDB** => database for storing Recos 
+- **Mongoose** => standardisation of Reco Schemas 
+- **Express.js + Node.js** => execution of js from server side
+- **React.js** => frontend UI
+- **Firebase Authentication** => user authentication with Google Sign-In
+- **Google Places API** => fetches location data real-time
+- **Render** => where the Backend server is deployed
+- **Netlify** => where the Frontend app is deployed 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Screenshots
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Using Google Places API to autofill recommendations ("Recos")
+<img src="./images/autofill.png" alt="Google Places API Autofill" width="25%">
 
-### `npm test`
+### Look at Shared Recos, and propose them to the group!
+<img src="./images/recos.png" alt="Main Page" width="25%">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Future Improvements
+- Confirmation prompt before deleting a Reco 
+- Currently this app is only limited to one group of friends, so option for a user to join multiple groups
+- Visit history
+- Upvote/Downvote system (along with date) to prioritise importance of proposed Recos
+- Tag a Reco with food or non-food
+- Search and Filter Recos
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Live Web Application
+If you like to explore this app, feel free to reach out via linkedin for access.
