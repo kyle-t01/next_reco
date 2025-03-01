@@ -32,10 +32,10 @@ This Project is deployed and being actively maintained!
 ## Screenshots
 
 ### Using Google Places API to autofill recommendations ("Recos")
-<img src="./images/autofill.png" alt="Google Places API Autofill" width="25%">
+<img src="./images/autofill.png" alt="Google Places API Autofill" width="100%">
 
 ### Look at Shared Recos, and propose them to the group!
-<img src="./images/recos.png" alt="Main Page" width="25%">
+<img src="./images/recos.png" alt="Main Page" width="100%">
 
 ## Future Improvements
 - Confirmation prompt before deleting a Reco 
