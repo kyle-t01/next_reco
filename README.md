@@ -30,6 +30,8 @@ This Project is deployed and being actively maintained!
 - **Netlify** => where the Frontend app is deployed 
 
 ## Screenshots
+**!!! Disclaimer !!!**
+Please note that **NextReco is an independent project** and is **not affiliated with or endorsed by any of the restaurants, locations, or activities listed in the app**. The recommendations displayed are user-generated and for informational purposes only.
 
 ### Using Google Places API to autofill recommendations ("Recos")
 <img src="./images/autofill.png" alt="Google Places API Autofill" width="100%">
