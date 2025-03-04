@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
 import { createReco, updateReco, deleteReco } from "../services/recoServices";
+import { fetchAIResponse } from "../services/aiServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
 
@@ -195,9 +196,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     // handling the submission of AI prompt
     const handleSubmitPrompt = async (e) => {
         e.preventDefault()
-        const systemPrompt = ""
+        console.log("handleSubmitPrompt()")
         // determine whether we in create-manual, create-lookup, override, or delete mode
-
+        const response = await fetchAIResponse(user, null, userPrompt);
+        console.log(response)
 
         // if we are in create-manual mode
         // have AI create the JSON and fill in an appropirate title, subtitle, and address if any. If no asddress provided, then set address to N/A. Subtitles are reserved for important keywords such as date, time, urgency, deals.
@@ -383,7 +385,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                         <div className="char-counter">
                             {userPrompt.length} / {maxChars}
                         </div>
-                        <button className="Submit Prompt" onClick={() => handleSubmitPrompt} disabled={false}>
+                        <button className="generate" onClick={handleSubmitPrompt}>
                             {"Generate"}
                         </button>
                     </div>
