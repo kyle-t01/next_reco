@@ -1,7 +1,7 @@
 /* set of helper functions connecting backend and frontend for AI prompts */
 
-const fetchAIResponse = async (user, reco, prompt) => {
-
+export const fetchAIResponse = async (user, reco, prompt) => {
+    console.log("fetching AI response...")
     try {
         // get current id token of user
         const idToken = await user.getIdToken();
@@ -18,18 +18,14 @@ const fetchAIResponse = async (user, reco, prompt) => {
             headers: headers,
         };
 
-
         requestOptions.body = JSON.stringify({
             prompt: prompt,
             reco: reco || null
         });
 
-
-
         const url = `https://next-reco-app.onrender.com/api/ai`;
         console.log("url: ", url)
         const response = await fetch(url, requestOptions);
-
 
         if (response.ok) {
 
