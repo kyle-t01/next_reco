@@ -10,6 +10,38 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
+// prompt engineering for system 
+const systemPrompt = `
+You are an AI that processes user requests into structured Reco objects.
+First, classify the request into one of the below categories based on the user:
+- [create-manual] specifying a custom name or unspecific broad location.
+- [create-lookup] finding an existing place on Google Maps.
+- [update-mode] updating an existing reco.
+- [delete-mode] deleting an existing reco.
+- [sort-filter] filtering or sorting existing recos.
+
+Then based on the mode, generate the appropiate JSON response:
+if [create-manual or create-lookup], generate a Reco with details fill in.
+if [update-mode], modify the user given reco.
+if [delete-mode], return the deletion criteria.
+if [sort-filter], return the filtering criteria.
+
+Reco Mongoose Schema:
+{
+  "categoryMode": "[classification label]",
+  "title": (string, required),
+  "subTitle": (string, optional | punchline of any dates, deals or important info),
+  "category": (either "food" or "non-food"),
+  "address": (string, or "N/A" if not specified),
+  "description": (string, optional),
+  "isPrivate": (boolean, default true) ,
+  "isProposed": (boolean, default false),
+  "googleData": (always null)
+}
+
+return only valid json, nothing else
+`
+
 
 // use authentication when using AI
 router.use(authMW)
@@ -22,30 +54,33 @@ router.post('/', async (req, res) => {
     console.log("The prompt recieved was: ", prompt)
     console.log("The reco recieved was: ", reco)
 
-    // prompt engineering for system prompt
-    // input: unstructured data => output: reco object
-    const systemPrompt = "You are an ai that extracts structured data from unstructured user requests. Your task is to parse the user query into a JSON object formatted as a Reco. A Reco should include -title (string,required) -subTitle(string, optional) -category(specificallyeither food or non-food) -isPrivate(boolean, default false) -isProposed(boolean, default false) -googleData(null) -isLookup(boolean). Additionally categorise the user request into [manual] if the user specifies a custom name and address, or [lookup] "
+
 
     // check whether there was a prompt
     if (!prompt || prompt.trim() === "") {
         return res.status(400).json({ error: "Prompt was empty!" });
     }
 
-    // give the ai some context
-    if (reco) {
-        console.log("should add some context prompts to AI")
-    }
 
     try {
         console.log("awaiting response from openai...")
         const aiResponse = await openai.chat.completions.create({
             model: "gpt-4o-mini",
-            messages: [{ role: "system", content: systemPrompt }, { role: "user", content: prompt },],
+            messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: prompt },
+                { role: "user", content: `Existing Reco Data: ${JSON.stringify(reco)}` },
+            ],
+            temperature: 0.2,
+            max_tokens: 512,
+            top_p: 1
         });
-        console.log("raw ai response was: ", aiResponse);
-        const result = aiResponse.choices[0].message.content
+
+
+
+        const result = JSON.parse(aiResponse.choices[0].message.content)
         console.log("The response from the AI was: ", result);
-        res.status(200).json({ result: result });
+        res.status(200).json({ result });
     } catch (error) {
         console.log(error)
         res.status(400).json({ error: error.message });
