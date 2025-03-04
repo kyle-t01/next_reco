@@ -3,7 +3,7 @@ import { UserAuth } from "../context/AuthContext"
 import { createReco, updateReco, deleteReco } from "../services/recoServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
-import AI from "../openai";
+
 const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco, prompt }) => {
     const inputRef = useRef(null)
 
@@ -197,8 +197,8 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         e.preventDefault()
         const systemPrompt = ""
         // determine whether we in create-manual, create-lookup, override, or delete mode
-       
-        
+
+
         // if we are in create-manual mode
         // have AI create the JSON and fill in an appropirate title, subtitle, and address if any. If no asddress provided, then set address to N/A. Subtitles are reserved for important keywords such as date, time, urgency, deals.
 
