@@ -37,10 +37,12 @@ router.post('/', async (req, res) => {
     }
 
     try {
+        console.log("awaiting response from openai...")
         const aiResponse = await openai.chat.completions.create({
             model: "gpt-4o-mini",
-            messages: [{ role: "user", content: prompt }, { role: "system", content: systemPrompt }],
+            messages: [{ role: "system", content: systemPrompt }, { role: "user", content: prompt },],
         });
+        console.log("raw ai response was: ", aiResponse);
         const result = aiResponse.choices[0].message.content
         console.log("The response from the AI was: ", result);
         res.status(200).json({ result: result });
