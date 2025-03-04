@@ -4,7 +4,7 @@ import { UserAuth } from '../context/AuthContext'
 
 import RecoForm from "../components/RecoForm";
 import RecoGridDisplay from "../components/RecoGridDisplay";
-import PromptBar from "../components/PromptBar";
+
 
 const Recos = () => {
     const { user } = UserAuth()
