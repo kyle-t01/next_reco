@@ -4,6 +4,7 @@ import { UserAuth } from '../context/AuthContext'
 
 import RecoForm from "../components/RecoForm";
 import RecoGridDisplay from "../components/RecoGridDisplay";
+import PromptBar from "../components/PromptBar";
 
 const Recos = () => {
     const { user } = UserAuth()
@@ -14,6 +15,9 @@ const Recos = () => {
     // active tab
     const [activeTab, setActiveTab] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
+
+    // prompt bar
+    const [prompt, setPrompt] = useState("")
 
     // load recos
     const loadRecos = async () => {
@@ -38,6 +42,32 @@ const Recos = () => {
         setActiveTab(tabNum);
     }
 
+    // render a bar where users can input prompts into
+    const renderPromptBar = () => {
+        const maxChars = 300;
+        if (isFormOpen) return;
+
+        return (
+            <div className="prompt-background">
+                <div className="prompt-bar">
+                    <textarea
+                        className="input"
+                        type="text"
+                        placeholder="Use A.I. to automatically create a new Reco!! Enter prompt here..."
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        rows={3}
+                        maxLength={maxChars}
+                    />
+                    <div className="char-counter">
+                        {prompt.length} / {maxChars}
+                    </div>
+                    <button className="generate" onClick={() => console.log("GENERATING AI RESPONSE")} disabled={false}>
+                        {"Generate"}
+                    </button>
+                </div>
+            </div>)
+    }
 
     // render a tab and its contents when it is active
     const renderActiveTab = () => {
@@ -66,10 +96,13 @@ const Recos = () => {
 
     return (
         <div className="recos">
+            {renderPromptBar()}
             {renderRecoNavbar()}
+
             {renderActiveTab()}
 
             <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} reco={null} />
+
         </div>
     );
 }
