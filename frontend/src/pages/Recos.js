@@ -100,11 +100,12 @@ const Recos = () => {
             {renderRecoNavbar()}
 
             {renderActiveTab()}
-            {renderPromptBar()}
-            <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} reco={null} />
+
+            <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} reco={null} prompt={prompt} />
 
         </div>
     );
 }
 
 export default Recos
+/* {renderPromptBar()} */
