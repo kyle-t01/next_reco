@@ -403,3 +403,70 @@ code {
   justify-content: left;
   text-align: left;
 }
+
+/* prompt bar styling */
+.prompt-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5a4123;
+  padding: 20px;
+}
+
+
+.prompt-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+  width: 95%;
+}
+
+.input {
+  width: 100%;
+  min-height: 60px;
+  padding: 12px;
+  font-size: 21px;
+  border: 2px solid #ddb5b5;
+  color: #42ff2d;
+  background-color: #000000;
+  border-radius: 8px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+
+.input:focus {
+  border-color: #0554a9;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.char-counter {
+  font-size: 14px;
+  color: #ffffff;
+  font-size: 14;
+  white-space: nowrap;
+}
+
+.generate {
+  background-color: #4a698a;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+}
+
+.generate:hover {
+  background-color: #0056b3;
+}
+
+.generate:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
