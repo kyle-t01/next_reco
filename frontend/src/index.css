@@ -437,6 +437,19 @@ code {
   transition: border-color 0.3s ease-in-out;
 }
 
+.input-container .input {
+  width: 100%;
+  min-height: 60px;
+  padding: 12px;
+  font-size: 21px;
+  border: 2px solid #ddb5b5;
+  color: #42ff2d;
+  background-color: #000000;
+  border-radius: 8px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
 
 .input:focus {
   border-color: #0554a9;
