@@ -176,8 +176,8 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         try {
             if (updateMode) {
                 console.log("Updating reco:", newReco);
-                // const data = await updateReco(user, newReco);
-                // onRecoUpdated(data)
+                const data = await updateReco(user, newReco);
+                onRecoUpdated(data)
             } else {
                 console.log("Creating new reco:", newReco);
                 await createReco(user, newReco);
