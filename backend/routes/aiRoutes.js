@@ -41,9 +41,9 @@ router.post('/', async (req, res) => {
             model: "gpt-4o-mini",
             messages: [{ role: "user", content: prompt }, { role: "system", content: systemPrompt }],
         });
-
-
-        res.json({ result: aiResponse.choices[0].message.content });
+        const result = aiResponse.choices[0].message.content
+        console.log("The response from the AI was: ", result);
+        res.json({ result: result });
     } catch (error) {
         console.log(error)
         res.status(400).json({ error: error.message });
