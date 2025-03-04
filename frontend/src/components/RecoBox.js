@@ -11,12 +11,19 @@ const RecoBox = ({ reco }) => {
     const [isRecoUpdated, setIsRecoUpdated] = useState(false)
     const [recoData, setRecoData] = useState(reco);
 
+    useEffect(() => {
+        if (!isRecoUpdated) {
+            setRecoData(reco);
+        }
+    }, [recoData, isRecoUpdated]);
+
 
 
     const handleRecoUpdated = (updatedReco) => {
         setIsFormOpen(false)
         setIsRecoUpdated(true)
         setRecoData(updatedReco)
+        console.log(updatedReco)
         return;
     }
 
@@ -145,9 +152,7 @@ const RecoBox = ({ reco }) => {
     }
 
     const renderRecoBox = () => {
-        if (isRecoUpdated) return (
-            <div className="reco-box">[Reco updated - please refresh page]</div>
-        );
+
         return (
             <div className="reco-box" onClick={handleViewDetails}>{renderFrontBox()}{renderBackBox()}</div>
         );
