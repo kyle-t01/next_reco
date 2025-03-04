@@ -1,6 +1,6 @@
 /* set of helper functions connecting backend and frontend for AI prompts */
 
-const fetchAI = async (user, method, body = null, queryParams = {}) => {
+const fetchAIResponse = async (user, reco, prompt) => {
 
     try {
         // get current id token of user
@@ -14,19 +14,19 @@ const fetchAI = async (user, method, body = null, queryParams = {}) => {
 
         // request options
         const requestOptions = {
-            method: method,
+            method: "POST",
             headers: headers,
         };
 
-        // add body when req method is not GET
-        if (body && method !== "GET") {
-            requestOptions.body = JSON.stringify(body);
-            console.log(requestOptions.body)
-        }
 
-        // construct the query string
-        const queryStr = new URLSearchParams(queryParams).toString();
-        const url = `https://next-reco-app.onrender.com/api/ai${queryStr ? `?${queryStr}` : ""}`;
+        requestOptions.body = JSON.stringify({
+            prompt: prompt,
+            reco: reco || null
+        });
+
+
+
+        const url = `https://next-reco-app.onrender.com/api/ai`;
         console.log("url: ", url)
         const response = await fetch(url, requestOptions);
 
@@ -46,9 +46,6 @@ const fetchAI = async (user, method, body = null, queryParams = {}) => {
 }
 
 
-export const fetchPostAI = async (user, reco) => {
-    const data = await fetchAI(user, "POST", reco);
-    return data;
-}
+
 
 
