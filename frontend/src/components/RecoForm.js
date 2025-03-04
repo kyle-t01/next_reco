@@ -4,6 +4,7 @@ import { createReco, updateReco, deleteReco } from "../services/recoServices";
 import { fetchAIResponse } from "../services/aiServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
+import PromptBox from "./PromptBox";
 
 const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco, prompt }) => {
     const inputRef = useRef(null)
@@ -194,18 +195,11 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     }
 
     // handling the submission of AI prompt
-    const handleSubmitPrompt = async (e) => {
-        e.preventDefault()
-        console.log("handleSubmitPrompt()")
-        // determine whether we in create-manual, create-lookup, override, or delete mode
-        const response = await fetchAIResponse(user, null, userPrompt);
-        console.log(response)
+    const handleAIResponse = (data) => {
+        console.log("AI data received:", data);
+        // TODO: ensure that the current reco is updated
 
-        // if we are in create-manual mode
-        // have AI create the JSON and fill in an appropirate title, subtitle, and address if any. If no asddress provided, then set address to N/A. Subtitles are reserved for important keywords such as date, time, urgency, deals.
-
-
-    }
+    };
 
 
     const resetForm = () => {
@@ -371,24 +365,13 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                             {renderDeleteButton()}
                         </div>}
                     </form>
-                    {/* AI prompt box */}
-                    <div className="prompt-bar">
-                        <textarea
-                            className="input"
-                            type="text"
-                            placeholder="Use A.I. to automatically create a new Reco!! Enter prompt here..."
-                            value={userPrompt}
-                            onChange={(e) => setUserPrompt(e.target.value)}
-                            rows={3}
-                            maxLength={maxChars}
-                        />
-                        <div className="char-counter">
-                            {userPrompt.length} / {maxChars}
-                        </div>
-                        <button className="generate" onClick={handleSubmitPrompt}>
-                            {"Generate"}
-                        </button>
-                    </div>
+                    {/* AI prompt box: TODO: should NOT be passing in outdated reco object instead of what's currently in form*/}
+                    <PromptBox
+                        user={user}
+                        initialPrompt={userPrompt}
+                        reco={reco}
+                        onAIResponse={handleAIResponse}
+                    />
                 </div>
                 <div className="rightside">
                     {renderGoogleDesc()}
