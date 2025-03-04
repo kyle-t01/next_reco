@@ -3,7 +3,7 @@ import { UserAuth } from "../context/AuthContext"
 import { createReco, updateReco, deleteReco } from "../services/recoServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
-
+import AI from "../openai";
 const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco, prompt }) => {
     const inputRef = useRef(null)
 
@@ -168,6 +168,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             googleData: newGoogleData
         };
 
+
         // TODO: validate entries
         console.log("submitting a new reco", newReco)
         try {
@@ -190,6 +191,20 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
 
     }
+
+    // handling the submission of AI prompt
+    const handleSubmitPrompt = async (e) => {
+        e.preventDefault()
+        const systemPrompt = ""
+        // determine whether we in create-manual, create-lookup, override, or delete mode
+       
+        
+        // if we are in create-manual mode
+        // have AI create the JSON and fill in an appropirate title, subtitle, and address if any. If no asddress provided, then set address to N/A. Subtitles are reserved for important keywords such as date, time, urgency, deals.
+
+
+    }
+
 
     const resetForm = () => {
         setTitle("")
@@ -368,7 +383,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                         <div className="char-counter">
                             {userPrompt.length} / {maxChars}
                         </div>
-                        <button className="generate" onClick={() => console.log("GENERATING AI RESPONSE")} disabled={false}>
+                        <button className="Submit Prompt" onClick={() => handleSubmitPrompt} disabled={false}>
                             {"Generate"}
                         </button>
                     </div>
