@@ -16,7 +16,7 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse }) => {
         }
 
         try {
-            const response = await fetchAIResponse(user, reco, userPrompt);
+            const response = await fetchAIResponse(user, reco, inititalPrompt);
             console.log("AI Response:", response);
 
             if (onAIResponse) {
@@ -34,7 +34,7 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse }) => {
                 type="text"
                 placeholder="Use A.I. to automatically create, update, delete and even filter Recos!! Enter prompt here..."
                 value={inititalPrompt}
-                onChange={(e) => setInitialPrompt(e.target.value)}
+                onChange={(e) => { setInitialPrompt(e.target.value); }}
                 rows={3}
                 maxLength={maxChars}
             />
