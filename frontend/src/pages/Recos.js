@@ -48,7 +48,7 @@ const Recos = () => {
         if (isFormOpen) return;
 
         return (
-            <div className="prompt-background">
+            <div >
                 <div className="prompt-bar">
                     <textarea
                         className="input"
@@ -81,12 +81,12 @@ const Recos = () => {
     const renderRecoNavbar = () => {
         if (isFormOpen) return;
 
-        return < div className="reco-navbar" >
+        return <div className="reco-navbar" >
             <button onClick={() => switchToTab(0)}>Personal</button>
             <button onClick={() => switchToTab(1)}>Group</button>
             <button onClick={() => switchToTab(2)}>Let's do this next!</button>
             <button onClick={() => setIsFormOpen(true)}>+ Add Reco</button>
-        </div >
+        </div>
     };
 
     useEffect(() => {
@@ -96,11 +96,11 @@ const Recos = () => {
 
     return (
         <div className="recos">
-            {renderPromptBar()}
+
             {renderRecoNavbar()}
 
             {renderActiveTab()}
-
+            {renderPromptBar()}
             <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} reco={null} />
 
         </div>
