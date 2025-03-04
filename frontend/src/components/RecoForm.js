@@ -4,7 +4,7 @@ import { createReco, updateReco, deleteReco } from "../services/recoServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
 
-const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco }) => {
+const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco, prompt }) => {
     const inputRef = useRef(null)
 
     // load the google maps api
@@ -31,7 +31,9 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     const [imageUrls, setImageUrls] = useState([]);
     const [googleData, setGoogleData] = useState(null);
     const [isValidSearch, setIsValidSearch] = useState(null);
+    const [userPrompt, setUserPrompt] = useState(prompt || "")
 
+    const maxChars = 300;
 
 
     useEffect(() => {
@@ -47,6 +49,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             setIsProposed(reco.isProposed);
             setImageUrls(reco.googleData?.imageUrls || []);
             setGoogleData(reco.googleData || null);
+
             setUpdateMode(true);
         } else {
             resetForm();
@@ -199,6 +202,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         setIsProposed(false)
         setImageUrls([])
         setIsValidSearch(false);
+        setUserPrompt("")
 
         // reset input ref
         if (inputRef.current) {
@@ -350,6 +354,24 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                             {renderDeleteButton()}
                         </div>}
                     </form>
+                    {/* AI prompt box */}
+                    <div className="prompt-bar">
+                        <textarea
+                            className="input"
+                            type="text"
+                            placeholder="Use A.I. to automatically create a new Reco!! Enter prompt here..."
+                            value={userPrompt}
+                            onChange={(e) => setUserPrompt(e.target.value)}
+                            rows={3}
+                            maxLength={maxChars}
+                        />
+                        <div className="char-counter">
+                            {userPrompt.length} / {maxChars}
+                        </div>
+                        <button className="generate" onClick={() => console.log("GENERATING AI RESPONSE")} disabled={false}>
+                            {"Generate"}
+                        </button>
+                    </div>
                 </div>
                 <div className="rightside">
                     {renderGoogleDesc()}
