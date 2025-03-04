@@ -171,20 +171,20 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         };
 
 
-        // TODO: validate entries
+        // TODO: validate entries here
         console.log("submitting a new reco", newReco)
         try {
             if (updateMode) {
                 console.log("Updating reco:", newReco);
-                await updateReco(user, newReco);
-                onRecoUpdated()
+                // const data = await updateReco(user, newReco);
+                // onRecoUpdated(data)
             } else {
                 console.log("Creating new reco:", newReco);
                 await createReco(user, newReco);
                 reco = null
                 onRecoAdded();
             }
-            // recoAdded is called wwhen updating or creating
+
 
             handleClose();
         } catch (error) {
@@ -195,9 +195,55 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     }
 
     // handling the submission of AI prompt
-    const handleAIResponse = (data) => {
-        console.log("AI data received:", data);
+    const handleAIResponse = async (data) => {
+        console.log("AI data was :", data);
+        if (!data) return;
         // TODO: ensure that the current reco is updated
+
+        // format data correctly according to category
+        if (data.category === 'create-lookup' || data.category === 'create-manual' || data.category === 'update-mode') {
+            // make a new object from the AI data
+            let recoAIObject = {
+                title: data.title || "",
+                subTitle: data.subTitle || "",
+                category: data.category || "food",
+                address: data.address || "",
+                description: data.description || "",
+                isPrivate: data.isPrivate || false,
+                isProposed: data.isProposed || false,
+                googleData: data.googleData || null,
+                imageUrls: data.googleData?.imageUrls || []
+            };
+            // handle case where create-manual
+            if (data.category === "create-manual") {
+                console.log("[create-manual]")
+                // put the user id inside the object
+
+                // call updateReco
+
+                // on reco updated
+
+            }
+            // handle case where create-lookup
+            if (data.category === "create-lookup") {
+                console.log("[create-lookup]")
+
+            }
+            // handle case where update-mode
+            if (data.category === "update-mode") {
+                console.log("[update-mode]")
+                // if not in update mode, return
+                if (!updateMode) return;
+
+
+            }
+
+        }
+
+        // Create a new reco object from AI data
+
+        console.log("The AI generated reco AI object was ")
+        // based on the category mode, modify the object
 
     };
 
