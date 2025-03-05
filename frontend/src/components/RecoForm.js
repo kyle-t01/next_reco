@@ -62,6 +62,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             setImageUrls(reco.googleData?.imageUrls || []);
             setPlaceID(reco.placeID || null);
             // if there was a placeID, should load up the google data object
+            if (reco && reco.placeID.trim() !== "") {
+                loadGoogleData()
+            }
+
             setUpdateMode(true);
         } else {
             resetForm();
@@ -117,6 +121,16 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         setImageUrls(urls)
         setIsValidSearch(true);
     }
+
+    const loadGoogleData = async () => {
+        console.log("There was an existing placeID, loading up google data now...")
+        const data = await fetchGoogleData(reco.placeID)
+        console.log("The google data is", data)
+        setGoogleData(data)
+
+        return;
+    }
+
 
     const handleDelete = async (e) => {
         e.preventDefault()
@@ -310,38 +324,52 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         return (
             <div className="google-description-container">
                 <h4>Google Information</h4>
-                <p>Place holder placeID: {placeID}</p>
+                <p></p>
                 <p>{googleData.name}</p>
+                {renderEditorialSummary()}
                 {renderGoogleImage()}
                 {renderGoogleReviews()}
                 {renderGoogleLinks()}
             </div>
         )
     }
+    const renderEditorialSummary = () => {
+        if (!googleData) return null;
+        return (
+            <div className="editorial">
+                <p>"{googleData.editorialSummary}"</p>
+            </div>
+        )
+    }
+
     const renderGoogleReviews = () => {
         if (!googleData) return <p></p>
 
-        const { rating, user_ratings_total, price_level } = googleData;
+        const { rating, userRatingsTotal, priceLevel } = googleData;
 
-        const price = price_level ? "$".repeat(price_level) : "N/A";
+        const price = priceLevel ? "$".repeat(priceLevel) : "N/A";
         const fullStars = Math.floor(rating);
         const hasHalfStar = rating % 1 !== 0;
         return (
             <div className="reco-reviews">
                 <div className="stars">{rating || "N/A"} {"⭐".repeat(fullStars)}{hasHalfStar ? "+" : ""}</div>
-                <div className="ratings">({user_ratings_total || "0"} reviews)</div>
+                <div className="ratings">({userRatingsTotal || "0"} reviews)</div>
                 <div className="price">Price: {price}</div>
             </div>
         )
     }
 
     const renderGoogleImage = () => {
-        if (!googleData || !imageUrls) {
+        if (!googleData) {
             return;
         }
-        if (imageUrls.length > 0) {
-            return <img src={imageUrls[0]} alt={`Google Image `} className="reco-image" />
+        if (googleData.photoReference) {
+
+            const imageURL = `https://next-reco-app.onrender.com/api/google/image?photoReference=${googleData.photoReference}`;
+
+            return <img src={imageURL} alt="" className="reco-image" />;
         }
+
     }
 
     const renderAIError = () => {
