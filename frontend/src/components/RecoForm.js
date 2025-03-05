@@ -1,11 +1,10 @@
 // TODO:
 // when swithcing to AI prompt box, disable form and create a temporary editedReco object for the Prompt Box to work with instead of passing in a static Reco
 
-
 import { useState, useEffect, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
 import { createReco, updateReco, deleteReco } from "../services/recoServices";
-
+import { fetchGoogleData, fetchPlaceIDFromText } from "../services/googleServices";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
 import PromptBox from "./PromptBox";
@@ -102,8 +101,6 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         setPlaceID(placeInfo.place_id);
         setTitle(placeInfo.name)
         setAddress(placeInfo.vicinity)
-        // TODO: extract the required fields only from the google data object
-        // temporary google data object
         setGoogleData(placeInfo)
 
         let urls = [];
@@ -155,19 +152,6 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             return;
         }
         const uid = user.uid;
-        // extract only the fields we want from the google data object
-        /*
-        const newGoogleData = googleData ? {
-            name: googleData.name || "",
-            price_level: googleData.price_level || null,
-            rating: googleData.rating || null,
-            url: googleData.url || "",
-            website: googleData.website || "",
-            vicinity: googleData.vicinity || "",
-            user_ratings_total: googleData.user_ratings_total || 0,
-            imageUrls: imageUrls || [],
-        } : null;
-         */
         const _id = reco?._id
         const newReco = {
             _id,
@@ -193,7 +177,6 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             } else {
                 console.log("Creating new reco:", newReco);
                 await createReco(user, newReco);
-                reco = null
                 onRecoAdded();
             }
 
@@ -204,16 +187,17 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
 
     }
-
+    // TODO: when ai response is loading, show loading screen
     // handling the submission of AI prompt
     const handleAIResponse = async (data) => {
-
+        console.log("handling AI Response")
         if (!data) return;
         // get the user id
         const currentUID = user.uid;
-
+        const categoryMode = data.categoryMode
+        console.log("prompt category was: ", categoryMode)
         // format data correctly according to category
-        if (["create-lookup", "create-manual", "update-mode"].includes(data.categoryMode)) {
+        if (["create-lookup", "create-manual", "update-mode"].includes(categoryMode)) {
 
             // make a new object from the AI data
             let recoAIObject = {
@@ -233,27 +217,37 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             console.log("AI returned this object: ", recoAIObject);
 
             // handle case where create-manual
-            if (data.category === "create-manual") {
+            if (categoryMode === "create-manual") {
                 console.log("[create-manual]")
-
-
-                // call updateReco
-
-                // on reco updated
+                console.log("Creating new reco (from AI):", recoAIObject);
+                await createReco(user, recoAIObject);
+                onRecoAdded();
+                handleClose();
 
             }
             // handle case where create-lookup
-            if (data.category === "create-lookup") {
+            if (categoryMode === "create-lookup") {
                 console.log("[create-lookup]")
+                console.log("Creating new reco (from AI)")
+
+                // lookup the location in google api, look at address
+                console.log("The address to be looked-up: ", recoAIObject.address)
+                const newPlaceID = await fetchPlaceIDFromText(recoAIObject.address)
+                console.log(newPlaceID)
+                recoAIObject.placeID = newPlaceID;
+                await createReco(user, recoAIObject);
+                onRecoAdded();
+                handleClose();
 
 
             }
             // handle case where update-mode
-            if (data.category === "update-mode") {
+            if (categoryMode === "update-mode") {
                 console.log("[update-mode]")
-                // if not in update mode, return
-                if (!updateMode) return;
-
+                console.log("Updating a reco: (from Ai)", recoAIObject);
+                const data = await updateReco(user, recoAIObject);
+                onRecoUpdated(data)
+                handleClose();
 
             }
 
@@ -261,7 +255,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
         // Create a new reco object from AI data
 
-        console.log("The AI generated reco AI object was ")
+
         // based on the category mode, modify the object
 
     };
