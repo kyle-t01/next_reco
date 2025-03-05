@@ -39,12 +39,12 @@ const createReco = async (req, res) => {
 
     try {
         // reco with proper ID formatting
-        const newReco = await Reco.create(reco)
+        const rawReco = await Reco.create(reco)
         console.log("success in creating a new Reco")
-        // format the id
-        newReco._id = newReco._id.toString();
-        console.log("===========formatted reco: ", newReco)
-
+        // turn created documented into an object to format _id
+        const newReco = rawReco.toObject()
+        newReco._id = newReco._id.toString()
+        console.log(newReco)
         res.status(200).json(newReco);
     } catch (error) {
         console.log(error)
