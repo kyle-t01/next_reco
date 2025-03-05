@@ -70,8 +70,8 @@ router.post('/', async (req, res) => {
             model: "gpt-4o-mini",
             messages: [
                 { role: "system", content: systemPrompt },
-                { role: "user", content: prompt },
                 { role: "user", content: `Existing Reco Data: ${JSON.stringify(reco)}` },
+                { role: "user", content: prompt },
             ],
             temperature: 0.2,
             max_tokens: 512,
