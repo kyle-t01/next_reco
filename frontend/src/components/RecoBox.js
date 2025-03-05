@@ -33,8 +33,8 @@ const RecoBox = ({ reco }) => {
 
     const loadGoogleData = async () => {
         const data = await fetchGoogleData(recoData.placeID);
-        console.log(data)
-        return null
+        setGoogleData(data)
+        return;
     };
 
 
@@ -79,15 +79,15 @@ const RecoBox = ({ reco }) => {
     const renderReviews = () => {
         if (!recoData) return;
         if (!googleData) return;
-        const { rating, user_ratings_total, price_level } = googleData;
+        const { rating, userRatingsTotal, priceLevel } = googleData;
 
-        const price = price_level ? "$".repeat(price_level) : "N/A";
+        const price = priceLevel ? "$".repeat(priceLevel) : "N/A";
         const fullStars = Math.floor(rating);
         const hasHalfStar = rating % 1 !== 0;
         return (
             <div className="reco-reviews">
                 <div className="stars">{rating || "N/A"} {"⭐".repeat(fullStars)}{hasHalfStar ? "+" : ""}</div>
-                <div className="ratings">({user_ratings_total || "0"} reviews)</div>
+                <div className="ratings">({userRatingsTotal || "0"} reviews)</div>
                 <div className="price">Price: {price}</div>
             </div>
         )
@@ -163,10 +163,14 @@ const RecoBox = ({ reco }) => {
 
     const renderImage = () => {
         // if there was no google data, then there wasn't an image
-        if (!googleData || !googleData.imageUrls) return;
+        if (!googleData) return;
         // for now only render the first image 
-        if (googleData.imageUrls.length > 0) {
-            return <img src={googleData.imageUrls[0]} alt={`Google Image `} className="reco-image" />
+
+        if (googleData.photoReference) {
+
+            const imageURL = `https://next-reco-app.onrender.com/api/google/image?photoReference=${googleData.photoReference}`;
+
+            return <img src={imageURL} alt="" className="reco-image" />;
         }
     }
 
