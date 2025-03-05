@@ -1,26 +1,34 @@
 // helper function that requests google place details from Google Places API using a placeID
-export const fetchGoogleData = async (reco) => {
+export const fetchGoogleData = async (placeId) => {
     console.log("fetching Google Data...")
-    const placeID = reco.placeID;
+    const placeID = placeId;
 
-    if (!reco) return null;
-    if (!placeID || placeID.trim === "") return null;
+
+    if (!placeID || placeID.trim() === "") return null;
 
     try {
-        const response = await fetch(
-            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeID}&key=${process.env.REACT_APP_GOOGLE_PLACES_API_KEY}`
-        );
-        const data = await response.json();
 
-        if (data.status !== "OK") {
-            console.error("Google Places API error");
-            return null;
+        // request options
+        const requestOptions = {
+            method: "GET",
+        };
+
+
+        const url = `https://next-reco-app.onrender.com/api/google?placeID=${placeID}`;
+        console.log("url: ", url)
+        const response = await fetch(url, requestOptions);
+
+        if (response.ok) {
+
+            const data = await response.json()
+            return data
+        } else {
+            console.error(`Google Places ERROR`);
+            return null
         }
-
-        return data;
     } catch (error) {
-        console.error("Error fetching Google Place details:", error);
-        return null;
+        console.log("error:", error);
     }
+
 
 }
