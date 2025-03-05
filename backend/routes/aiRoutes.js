@@ -36,7 +36,9 @@ Reco Mongoose Schema:
   "description": (string, optional),
   "isPrivate": (boolean, default true) ,
   "isProposed": (boolean, default false),
-  "googleData": (always null)
+  "googleData": (always null regardless),
+  "uid": (null if unless in supplied reco ONLY),
+  "_id": (null unless in supplied reco ONLY)
 }
 
 return only valid json, nothing else
