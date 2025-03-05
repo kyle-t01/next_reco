@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ error: "Prompt was empty!" });
     }
 
-
+    console.log("existing reco is: ", reco)
     try {
         console.log("awaiting response from openai...")
         const aiResponse = await openai.chat.completions.create({
