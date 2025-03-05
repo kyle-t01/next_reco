@@ -38,7 +38,7 @@ Reco Mongoose Schema:
   "isProposed": (boolean, default false),
   "placeID": (null unless supplied by reco ONLY),
   "uid": (null unless supplied by reco ONLY),
-  "_id": (null unless supplied by reco ONLY)
+  "_id": (discard this attribute entirely unless supplied by reco ONLY)
 }
 
 return only valid json, nothing else
