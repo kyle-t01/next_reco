@@ -35,7 +35,13 @@ const getReco = async (req, res) => {
 const createReco = async (req, res) => {
     console.log("### CREATE RECO ###")
     const reco = req.body
-    console.log("newReco from req.body", reco)
+    if (!reco) {
+        return res.status(400).json({ error: "createReco: missing reco object!" });
+    }
+
+    if (reco._id) {
+        return res.status(400).json({ error: "createReco: proto reco should NOT already have an _id!" });
+    }
 
     try {
         // reco with proper ID formatting
