@@ -8,6 +8,7 @@ const cors = require('cors');
 require('./firebase/firebaseAdmin')
 const recoRoutes = require('./routes/recoRoutes')
 const aiRoutes = require('./routes/aiRoutes')
+const googleRoutes = require('./routes/googleRoutes')
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 // routes
 app.use('/api/recos', recoRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/google', googleRoutes);
 
 // connect to the database
 mongoose.connect(process.env.MONGODB_URI)
