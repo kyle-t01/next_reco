@@ -61,5 +61,31 @@ router.get('/', async (req, res) => {
 
 });
 
+// fetch an image
+router.get('/image', async (req, res) => {
+    console.log("### FETCHING A GOOGLE PLACE IMAGE ###");
+
+    const { photoReference } = req.query;
+    if (!photoReference) {
+        return res.status(400).json({ error: "Photo reference is missing!" });
+    }
+
+    try {
+        const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+        const url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReference}&key=${apiKey}`;
+
+        // get image data 
+        const response = await axios.get(url, { responseType: 'arraybuffer' });
+        res.setHeader('Content-Type', 'image/jpeg');
+        res.send(response.data);
+    } catch (error) {
+        console.error("Error fetching Google Place photo:", error);
+        res.status(500).json({ error: "Failed to fetch place photo" });
+    }
+});
+
+
+
+
 
 module.exports = router;
