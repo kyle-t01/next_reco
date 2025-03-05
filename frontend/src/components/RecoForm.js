@@ -8,6 +8,7 @@ import { fetchGoogleData, fetchPlaceIDFromText } from "../services/googleService
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
 import PromptBox from "./PromptBox";
+import { set } from "mongoose";
 
 const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco, prompt }) => {
     const inputRef = useRef(null)
@@ -39,6 +40,12 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     const [userPrompt, setUserPrompt] = useState(prompt || "")
     const [googleData, setGoogleData] = useState(null)
     const maxChars = 300;
+    // AI loading
+
+
+    // errorModes
+    const [isAIError, setAIError] = useState(false)
+    const [errorMessageAI, setErrorMessageAI] = useState(null)
 
 
     useEffect(() => {
@@ -252,11 +259,22 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             }
 
         }
+        // delete-mode should not be allowed to do anything in reco form!
+        if (categoryMode === "delete-mode") {
+            console.log("[delete-mode] is invalid within reco form")
+            setAIError(true)
+            setErrorMessageAI("ERROR: delete via A.I. is not available within forms")
 
-        // Create a new reco object from AI data
 
+        }
+        // sort-filter should not be allowed to do anything in reco form!
+        if (categoryMode === "sort-filter") {
+            console.log("[sort-filter] is invalid within reco form")
+            setAIError(true)
+            setErrorMessageAI("ERROR: sorting and filtering via A.I. are not available within forms")
 
-        // based on the category mode, modify the object
+        }
+
 
     };
 
@@ -274,6 +292,8 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         setIsValidSearch(false);
         setGoogleData(null)
         setUserPrompt("")
+        setAIError(false)
+        setErrorMessageAI(null)
 
         // reset input ref
         if (inputRef.current) {
@@ -324,6 +344,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         }
     }
 
+    const renderAIError = () => {
+        if (!errorMessageAI) return;
+        return <div className="error">{errorMessageAI}</div>
+    }
 
     const renderGoogleLinks = () => {
         if (!googleData) return;
@@ -431,6 +455,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                 </div>
                 <div className="rightside">
                     {renderGoogleDesc()}
+                    {renderAIError()}
                     <PromptBox
                         user={user}
                         initialPrompt={userPrompt}
