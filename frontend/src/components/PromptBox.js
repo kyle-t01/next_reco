@@ -4,14 +4,17 @@ import { fetchAIResponse } from "../services/aiServices";
 
 const PromptBox = ({ user, reco, userPrompt, onAIResponse }) => {
     const [inititalPrompt, setInitialPrompt] = useState(userPrompt || "");
+    const [isLoading, setIsLoading] = useState(false)
     const maxChars = 300;
 
     const handleSubmitPrompt = async (e) => {
         e.preventDefault();
+        setIsLoading(true)
         console.log("handleSubmitPrompt() called");
 
         if (!user) {
             console.error("Must have a user!");
+            setIsLoading(false)
             return;
         }
 
@@ -22,8 +25,10 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse }) => {
             if (onAIResponse) {
                 onAIResponse(response);
             }
+            setIsLoading(false)
         } catch (error) {
             console.error("Error generating AI response:", error);
+            setIsLoading(false)
         }
     };
 
@@ -41,8 +46,9 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse }) => {
             <div className="char-counter">
                 {inititalPrompt.length} / {maxChars}
             </div>
-            <button className="generate" onClick={handleSubmitPrompt}>
-                {"Generate"}
+            <button className="generate" onClick={handleSubmitPrompt} disabled={isLoading}>
+                {isLoading ? "A.I. responding..." : "Generate"}
+
             </button>
         </div>
     );
