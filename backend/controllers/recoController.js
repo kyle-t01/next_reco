@@ -39,7 +39,7 @@ const createReco = async (req, res) => {
 
     try {
         const newReco = await Reco.create({ ...reco })
-        console.log("success in creating a new Reco")
+        console.log("success in creating a new Reco", newReco)
         res.status(200).json(newReco);
     } catch (error) {
         console.log(error)
