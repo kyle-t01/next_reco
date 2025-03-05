@@ -32,7 +32,7 @@ Reco Mongoose Schema:
   "title": (string, required),
   "subTitle": (string, optional | punchline of any dates, deals or important info),
   "category": (either "food" or "non-food"),
-  "address": (string, "N/A" if not specified, you should try to infer the full address),
+  "address": (string, you must infer the full address for the google places API),
   "description": (string, optional),
   "isPrivate": (boolean, default true) ,
   "isProposed": (boolean, default false),
