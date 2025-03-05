@@ -8,7 +8,7 @@ import { fetchGoogleData, fetchPlaceIDFromText } from "../services/googleService
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
 import PromptBox from "./PromptBox";
-import { set } from "mongoose";
+
 
 const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, reco, prompt }) => {
     const inputRef = useRef(null)
@@ -62,7 +62,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             setImageUrls(reco.googleData?.imageUrls || []);
             setPlaceID(reco.placeID || null);
             // if there was a placeID, should load up the google data object
-            if (reco && reco.placeID.trim() !== "") {
+            if (reco && reco.placeID && reco.placeID.trim() !== "") {
                 loadGoogleData()
             }
 
