@@ -42,10 +42,8 @@ const createReco = async (req, res) => {
         const newReco = await Reco.create(reco)
         console.log("success in creating a new Reco")
         // format the id
-        const { _id } = newReco._id.toString()
-        console.log("formatted id: ", _id)
-        newReco._id = _id;
-        console.log("formatted reco: ", newReco)
+        newReco._id = newReco._id.toString();
+        console.log("===========formatted reco: ", newReco)
 
         res.status(200).json(newReco);
     } catch (error) {
