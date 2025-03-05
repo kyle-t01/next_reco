@@ -80,7 +80,7 @@ router.post('/', async (req, res) => {
 
         const result = JSON.parse(aiResponse.choices[0].message.content)
         console.log("The response from the AI was: ", result);
-        res.status(200).json({ result });
+        res.status(200).json(result);
     } catch (error) {
         console.log(error)
         res.status(400).json({ error: error.message });
