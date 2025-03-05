@@ -32,7 +32,7 @@ Reco Mongoose Schema:
   "title": (string, required),
   "subTitle": (string, optional | punchline of any dates, deals or important info),
   "category": (either "food" or "non-food"),
-  "address": (string, or "N/A" if not specified),
+  "address": (string, "N/A" if not specified, you should try to infer the full address),
   "description": (string, optional),
   "isPrivate": (boolean, default true) ,
   "isProposed": (boolean, default false),
