@@ -5,7 +5,7 @@
 import { useState, useEffect, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
 import { createReco, updateReco, deleteReco } from "../services/recoServices";
-import { fetchAIResponse } from "../services/aiServices";
+
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api"
 import { GOOGLE_MAPS_LIBRARIES } from "../googlePlaces";
 import PromptBox from "./PromptBox";
@@ -35,10 +35,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     const [isPrivate, setIsPrivate] = useState(false);
     const [isProposed, setIsProposed] = useState(false);
     const [imageUrls, setImageUrls] = useState([]);
-    const [googleData, setGoogleData] = useState(null);
+    const [placeID, setPlaceID] = useState(null);
     const [isValidSearch, setIsValidSearch] = useState(null);
     const [userPrompt, setUserPrompt] = useState(prompt || "")
-
+    const [googleData, setGoogleData] = useState(null)
     const maxChars = 300;
 
 
@@ -54,8 +54,8 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             setIsPrivate(reco.isPrivate);
             setIsProposed(reco.isProposed);
             setImageUrls(reco.googleData?.imageUrls || []);
-            setGoogleData(reco.googleData || null);
-
+            setPlaceID(reco.placeID || null);
+            // if there was a placeID, should load up the google data object
             setUpdateMode(true);
         } else {
             resetForm();
@@ -81,12 +81,15 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     }
 
     const handleOnPlacesChanged = () => {
+        console.log("handling on places changed...")
         if (!inputRef) {
+            console.log("there was no input ref")
             resetForm()
             return;
         }
         const placeDetails = inputRef.current?.getPlaces();
-
+        console.log("inputRef.current is.. ", inputRef.current)
+        console.log("placeDetails are.. ", placeDetails)
         if (!placeDetails || placeDetails.length === 0) {
             setIsValidSearch(false);
             resetForm()
@@ -94,11 +97,14 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         }
 
         // gives the details that has been autofilled
-
         const placeInfo = placeDetails[0]
-        setGoogleData(placeInfo);
+        console.log(placeInfo)
+        setPlaceID(placeInfo.place_id);
         setTitle(placeInfo.name)
         setAddress(placeInfo.vicinity)
+        // TODO: extract the required fields only from the google data object
+        // temporary google data object
+        setGoogleData(placeInfo)
 
         let urls = [];
         if (placeInfo.photos && placeInfo.photos.length > 0) {
@@ -150,6 +156,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         }
         const uid = user.uid;
         // extract only the fields we want from the google data object
+        /*
         const newGoogleData = googleData ? {
             name: googleData.name || "",
             price_level: googleData.price_level || null,
@@ -160,6 +167,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             user_ratings_total: googleData.user_ratings_total || 0,
             imageUrls: imageUrls || [],
         } : null;
+         */
         const _id = reco?._id
         const newReco = {
             _id,
@@ -171,7 +179,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             isPrivate,
             isProposed,
             uid,
-            googleData: newGoogleData
+            placeID: placeID
         };
 
 
@@ -216,19 +224,18 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                 description: data.description || "",
                 isPrivate: data.isPrivate || false,
                 isProposed: data.isProposed || false,
-                googleData: data.googleData || null,
-                imageUrls: data.googleData?.imageUrls || [],
+                placeID: data.placeID || null,
                 _id: data._id || null,
                 uid: data.uid || currentUID,
             };
-            
+
             // console log the returned data
             console.log("AI returned this object: ", recoAIObject);
 
             // handle case where create-manual
             if (data.category === "create-manual") {
                 console.log("[create-manual]")
-                
+
 
                 // call updateReco
 
@@ -266,18 +273,19 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         setCategory("food")
         setAddress("")
         setDescription("")
-        setGoogleData(null)
+        setPlaceID(null)
         setIsPrivate(false)
         setIsProposed(false)
         setImageUrls([])
         setIsValidSearch(false);
+        setGoogleData(null)
         setUserPrompt("")
 
         // reset input ref
         if (inputRef.current) {
+
             inputRef.current.value = "";
         }
-        inputRef.current = null;
     }
 
     if (!isOpen) return null;
@@ -288,6 +296,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         return (
             <div className="google-description-container">
                 <h4>Google Information</h4>
+                <p>Place holder placeID: {placeID}</p>
                 <p>{googleData.name}</p>
                 {renderGoogleImage()}
                 {renderGoogleReviews()}
@@ -424,15 +433,16 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                         </div>}
                     </form>
                     {/* AI prompt box: TODO: should NOT be passing in outdated reco object instead of what's currently in form*/}
+
+                </div>
+                <div className="rightside">
+                    {renderGoogleDesc()}
                     <PromptBox
                         user={user}
                         initialPrompt={userPrompt}
                         reco={reco}
                         onAIResponse={handleAIResponse}
                     />
-                </div>
-                <div className="rightside">
-                    {renderGoogleDesc()}
                 </div>
 
             </div>
