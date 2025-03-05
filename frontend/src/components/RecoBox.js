@@ -1,6 +1,8 @@
 // A box containing a summary of basic Reco information
+// TODO: change googleData to google's placeID
 import { useState, useEffect } from "react";
 import RecoForm from "./RecoForm";
+import { fetchGoogleData } from "../services/googleServices";
 
 const RecoBox = ({ reco }) => {
 
@@ -10,14 +12,26 @@ const RecoBox = ({ reco }) => {
     const [isRecoDeleted, setIsRecoDeleted] = useState(false)
     const [isRecoUpdated, setIsRecoUpdated] = useState(false)
     const [recoData, setRecoData] = useState(reco);
+    const [googleData, setGoogleData] = useState(null)
 
     useEffect(() => {
+
+
         if (!isRecoUpdated) {
             setRecoData(reco);
         }
+        // if this reco already had a placeID, load googleData
+        if (recoData.placeID) {
+            setGoogleData(loadGoogleData())
+        }
+
     }, [recoData, isRecoUpdated]);
 
-
+    const loadGoogleData = async () => {
+        const data = await fetchGoogleData(recoData)
+        console.log(data)
+        return data
+    }
 
     const handleRecoUpdated = (updatedReco) => {
         setIsFormOpen(false)
@@ -59,7 +73,7 @@ const RecoBox = ({ reco }) => {
 
     const renderReviews = () => {
         if (!recoData) return;
-        if (!recoData.googleData) return;
+        if (!googleData) return;
         const { rating, user_ratings_total, price_level } = recoData.googleData;
 
         const price = price_level ? "$".repeat(price_level) : "N/A";
@@ -115,7 +129,7 @@ const RecoBox = ({ reco }) => {
 
     const renderGoogleDesc = () => {
 
-        if (!recoData.googleData) return;
+        if (!googleData) return;
 
         return (
 
@@ -126,16 +140,16 @@ const RecoBox = ({ reco }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        📍 {recoData.googleData.vicinity}
+                        📍 {googleData.vicinity}
                     </a>
                 </p>
                 {
                     recoData.googleData.website && <a
-                        href={recoData.googleData.website}
+                        href={googleData.website}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        🌐 {recoData.googleData.title} Website
+                        🌐 {googleData.title} Website
                     </a>
                 }
             </div >
@@ -144,10 +158,10 @@ const RecoBox = ({ reco }) => {
 
     const renderImage = () => {
         // if there was no google data, then there wasn't an image
-        if (!recoData.googleData || !recoData.googleData.imageUrls) return;
+        if (!googleData || !googleData.imageUrls) return;
         // for now only render the first image 
-        if (recoData.googleData.imageUrls.length > 0) {
-            return <img src={recoData.googleData.imageUrls[0]} alt={`Google Image `} className="reco-image" />
+        if (googleData.imageUrls.length > 0) {
+            return <img src={googleData.imageUrls[0]} alt={`Google Image `} className="reco-image" />
         }
     }
 
