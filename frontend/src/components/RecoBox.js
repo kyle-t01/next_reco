@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import RecoForm from "./RecoForm";
 import { fetchGoogleData } from "../services/googleServices";
 
-const RecoBox = ({ reco }) => {
 
+const RecoBox = ({ reco }) => {
 
     const [isViewing, setIsViewing] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false)
@@ -13,6 +13,7 @@ const RecoBox = ({ reco }) => {
     const [isRecoUpdated, setIsRecoUpdated] = useState(false)
     const [recoData, setRecoData] = useState(reco);
     const [googleData, setGoogleData] = useState(null)
+
 
     useEffect(() => {
 
@@ -22,16 +23,20 @@ const RecoBox = ({ reco }) => {
         }
         // if this reco already had a placeID, load googleData
         if (recoData.placeID) {
-            setGoogleData(loadGoogleData())
+            //setGoogleData(loadGoogleData())
+            loadGoogleData()
         }
 
     }, [recoData, isRecoUpdated]);
 
+
+
     const loadGoogleData = async () => {
-        const data = await fetchGoogleData(recoData)
+        const data = await fetchGoogleData(recoData.placeID);
         console.log(data)
-        return data
-    }
+        return null
+    };
+
 
     const handleRecoUpdated = (updatedReco) => {
         setIsFormOpen(false)
