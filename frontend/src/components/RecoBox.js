@@ -74,7 +74,7 @@ const RecoBox = ({ reco }) => {
     const renderReviews = () => {
         if (!recoData) return;
         if (!googleData) return;
-        const { rating, user_ratings_total, price_level } = recoData.googleData;
+        const { rating, user_ratings_total, price_level } = googleData;
 
         const price = price_level ? "$".repeat(price_level) : "N/A";
         const fullStars = Math.floor(rating);
@@ -136,7 +136,7 @@ const RecoBox = ({ reco }) => {
             < div >
                 <p>
                     <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(recoData.googleData.vicinity)}`}
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleData.vicinity)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -144,7 +144,7 @@ const RecoBox = ({ reco }) => {
                     </a>
                 </p>
                 {
-                    recoData.googleData.website && <a
+                    googleData.website && <a
                         href={googleData.website}
                         target="_blank"
                         rel="noopener noreferrer"
