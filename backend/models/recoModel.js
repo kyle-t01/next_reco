@@ -37,10 +37,9 @@ const recoSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    googleData: {
-        type: Object
+    placeID: {
+        type: String,
     },
-
     uid: {
         type: String,
         required: true,
