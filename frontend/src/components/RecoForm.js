@@ -1,3 +1,7 @@
+// TODO:
+// when swithcing to AI prompt box, disable form and create a temporary editedReco object for the Prompt Box to work with instead of passing in a static Reco
+
+
 import { useState, useEffect, useRef } from "react";
 import { UserAuth } from "../context/AuthContext"
 import { createReco, updateReco, deleteReco } from "../services/recoServices";
@@ -185,7 +189,6 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                 onRecoAdded();
             }
 
-
             handleClose();
         } catch (error) {
             console.log(error)
@@ -196,12 +199,14 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
     // handling the submission of AI prompt
     const handleAIResponse = async (data) => {
-        console.log("AI data was :", data);
+
         if (!data) return;
-        // TODO: ensure that the current reco is updated
+        // get the user id
+        const currentUID = user.uid;
 
         // format data correctly according to category
-        if (data.category === 'create-lookup' || data.category === 'create-manual' || data.category === 'update-mode') {
+        if (["create-lookup", "create-manual", "update-mode"].includes(data.categoryMode)) {
+
             // make a new object from the AI data
             let recoAIObject = {
                 title: data.title || "",
@@ -212,12 +217,18 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                 isPrivate: data.isPrivate || false,
                 isProposed: data.isProposed || false,
                 googleData: data.googleData || null,
-                imageUrls: data.googleData?.imageUrls || []
+                imageUrls: data.googleData?.imageUrls || [],
+                _id: data._id || null,
+                uid: data.uid || currentUID,
             };
+            
+            // console log the returned data
+            console.log("AI returned this object: ", recoAIObject);
+
             // handle case where create-manual
             if (data.category === "create-manual") {
                 console.log("[create-manual]")
-                // put the user id inside the object
+                
 
                 // call updateReco
 
@@ -227,6 +238,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             // handle case where create-lookup
             if (data.category === "create-lookup") {
                 console.log("[create-lookup]")
+
 
             }
             // handle case where update-mode
