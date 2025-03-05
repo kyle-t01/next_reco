@@ -32,7 +32,7 @@ Reco Mongoose Schema:
   "title": (string, required),
   "subTitle": (string, optional | punchline of any dates, deals or important info),
   "category": (either "food" or "non-food"),
-  "address": (string, if in [create-lookup] infer at least a suburb or a city name and return "venue + location"),
+  "address": (string, if in [create-lookup] infer at least a suburb or a city name and return venue name and location together for the sake of google places api"),
   "description": (string, optional),
   "isPrivate": (boolean, default true) ,
   "isProposed": (boolean, default false),
