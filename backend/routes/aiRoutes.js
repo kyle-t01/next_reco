@@ -28,7 +28,7 @@ if [sort-filter], return the filtering criteria.
 
 Reco Mongoose Schema:
 {
-  "categoryMode": "[classification label]",
+  "categoryMode": "classification label"| without the [],
   "title": (string, required),
   "subTitle": (string, optional | punchline of any dates, deals or important info),
   "category": (either "food" or "non-food"),
