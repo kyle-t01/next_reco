@@ -23,8 +23,8 @@ First, classify the request into one of the below categories based on the user:
 Then based on the mode, generate the appropiate JSON response:
 if [create-manual or create-lookup], generate a Reco with details fill in.
 if [update-mode], modify the user given reco.
-if [delete-mode], return the deletion criteria.
-if [sort-filter], return the filtering criteria.
+if [delete-mode], return the deletion criteria as deleteCriteria.
+if [sort-filter], return the filtering and sorting criteria within criteria.
 
 Reco Mongoose Schema:
 {
