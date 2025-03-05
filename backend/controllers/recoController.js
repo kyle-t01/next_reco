@@ -38,8 +38,10 @@ const createReco = async (req, res) => {
     console.log("newReco from req.body", reco)
 
     try {
-        const newReco = await Reco.create({ ...reco })
-        console.log("success in creating a new Reco", newReco)
+        const newReco = await Reco.create(reco)
+        console.log("success in creating a new Reco")
+        console.log(newReco)
+        console.log(newReco.toObject())
         res.status(200).json(newReco);
     } catch (error) {
         console.log(error)
