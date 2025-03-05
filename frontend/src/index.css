@@ -483,3 +483,7 @@ code {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.editorial {
+  font-style: italic;
+}
