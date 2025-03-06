@@ -53,8 +53,9 @@ code {
   color: white;
   overflow: hidden;
   width: 100%;
+  height: 100%;
   max-width: 300px;
-  height: 300px;
+  height: 350px;
   cursor: pointer;
 }
 
@@ -352,6 +353,7 @@ code {
   flex-direction: column;
   justify-content: space-between;
 
+
 }
 
 .edit-button {
@@ -364,8 +366,18 @@ code {
 
 .reco-back a {
   color: #ffd700;
+  text-align: left;
   text-decoration: none;
   font-weight: bold;
+
+}
+
+.reco-back .hyperlinks {
+  color: #ffd700;
+  text-align: left;
+  text-decoration: none;
+  font-weight: bold;
+
 }
 
 .reco-back a:hover {
@@ -486,4 +498,46 @@ code {
 
 .editorial {
   font-style: italic;
+}
+
+/* tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  gap: 4px;
+  margin: 4px 0;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 4px;
+  font-size: 9px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 4px;
+  background-color: #ddd;
+  color: #333;
+  margin: 0px;
+}
+
+
+.tag-visited {
+  background-color: #2196f3;
+  color: white;
+}
+
+.tag-not-visited {
+  background-color: #bbb;
+  color: white;
+}
+
+.tag-proposed {
+  background-color: #ff9800;
+  color: white;
+}
+
+.tag-not-proposed {
+  background-color: #bbb;
+  color: white;
 }
