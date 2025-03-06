@@ -13,9 +13,6 @@ router.get('/', getRecos)
 // GET all Recos that are visible to the user
 router.get('/all', getAllRecos)
 
-// GET a Reco
-router.get('/', getReco)
-
 // POST a new Reco
 router.post('/', createReco)
 
