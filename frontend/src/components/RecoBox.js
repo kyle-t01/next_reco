@@ -6,7 +6,6 @@ import { fetchGoogleData } from "../services/googleServices";
 import { UserAuth } from "../context/AuthContext";
 
 
-
 // order of tag importance: visited? proposed? food? privated? owned by you?
 
 const RecoBox = ({ reco }) => {
@@ -28,7 +27,7 @@ const RecoBox = ({ reco }) => {
             setRecoData(reco);
         }
         // if this reco already had a placeID, load googleData
-        if (recoData.placeID) {
+        if (recoData?.placeID) {
             //setGoogleData(loadGoogleData())
             loadGoogleData()
         }
@@ -38,6 +37,7 @@ const RecoBox = ({ reco }) => {
 
 
     const loadGoogleData = async () => {
+        if (!recoData?.placeID) return;
         const data = await fetchGoogleData(recoData.placeID);
         setGoogleData(data)
         return;
@@ -77,6 +77,7 @@ const RecoBox = ({ reco }) => {
         // tag classNames
         const visitedClassName = recoData.isVisited ? "tag-visited" : "tag-not-visited";
         const proposedClassName = recoData.isProposed ? "tag-proposed" : "tag-not-proposed";
+
         const categoryClassName = "tag-category";
         const privateGroupClassName = recoData.isPrivate ? "tag-private" : "tag-public";
         const authorClassName = recoData.uid === user.uid ? "tag-author-you" : "tag-author-group";
