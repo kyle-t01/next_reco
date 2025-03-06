@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRecos, getGroupRecos, getProposedRecos, createReco } from '../services/recoServices'
+import { getRecos, getGroupRecos, getProposedRecos, getAllRecos, createReco } from '../services/recoServices'
 import { fetchPlaceIDFromText } from "../services/googleServices";
 import { UserAuth } from '../context/AuthContext'
 
@@ -15,7 +15,7 @@ const Recos = () => {
     const [isFormOpen, setIsFormOpen] = useState(false)
 
     // active tab
-    const [activeTab, setActiveTab] = useState(0)
+    const [activeTab, setActiveTab] = useState(3)
     const [isLoading, setIsLoading] = useState(false)
 
     // prompt bar
@@ -32,6 +32,8 @@ const Recos = () => {
             setRecos(await getGroupRecos(user));
         } else if (activeTab === 2) {
             setRecos(await getProposedRecos(user));
+        } else if (activeTab === 3) {
+            setRecos(await getAllRecos(user));
         }
         setIsLoading(false);
     }
@@ -57,6 +59,7 @@ const Recos = () => {
         if (isFormOpen) return;
 
         return <div className="reco-navbar" >
+            <button onClick={() => switchToTab(3)}>Show All</button>
             <button onClick={() => switchToTab(0)}>Personal</button>
             <button onClick={() => switchToTab(1)}>Group</button>
             <button onClick={() => switchToTab(2)}>Let's do this next!</button>
