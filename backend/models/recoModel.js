@@ -37,6 +37,10 @@ const recoSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    isVisited: {
+        type: Boolean,
+        default: false,
+    },
     placeID: {
         type: String,
     },
