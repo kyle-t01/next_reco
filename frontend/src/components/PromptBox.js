@@ -38,7 +38,8 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse, onPromptChanged }) =>
             <textarea
                 className="input"
                 type="text"
-                placeholder="Use A.I. to automatically create, update, delete and even filter Recos!! Enter prompt here..."
+                placeholder="Filter, sort, and get AI-powered recommendations! You can also create, update, or delete Recos. Enter instructions here..."
+
                 value={inititalPrompt}
                 onChange={(e) => { setInitialPrompt(e.target.value); onPromptChanged(e.target.value) }}
                 rows={3}
