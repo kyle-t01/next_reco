@@ -116,7 +116,7 @@ router.post('/subset', async (req, res) => {
                 // use subsetPrompt
                 { role: "system", content: subsetSystemPrompt },
                 { role: "user", content: `User prompt: ${prompt}` },
-                { role: "user", content: `List of Recos: ${recos}` },
+                { role: "user", content: `List of Recos: ${JSON.stringify(recos)}` },
                 { role: "user", content: prompt },
             ],
             temperature: 0.2,
