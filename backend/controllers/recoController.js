@@ -56,7 +56,7 @@ const getAllRecos = async (req, res) => {
 const getReco = async (req, res) => {
     // 
     console.log("")
-    console.log("tried to GET a Reco")
+    console.log("tried to GET a Reco but fails since not implemented")
 
 }
 

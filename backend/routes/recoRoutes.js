@@ -7,11 +7,11 @@ const authMW = require('../middlewares/authMiddleware');
 // use authentication when using Reco
 router.use(authMW)
 
-// GET all Recos authored by the user onnly
-router.get('/', getRecos)
-
 // GET all Recos that are visible to the user
 router.get('/all', getAllRecos)
+
+// GET all Recos authored by the user onnly
+router.get('/', getRecos)
 
 // POST a new Reco
 router.post('/', createReco)
