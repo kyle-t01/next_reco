@@ -58,7 +58,7 @@ const subsetSystemPrompt = `
 You are an AI the processes user requests and a structured list of Recos
 First, you must always follow the below ruleset:
 - always receive a list of Reco objects as input
-- always return a list of Reco titles extracted from given list as output
+- always return a list of Reco extracted from given list as output
 - you must ONLY do tailoring on the given list, not modify its contents
 - tailoring means to be aware of recos in a context aware way
 
@@ -81,10 +81,6 @@ Reco Mongoose Schema:
   "isVisited": (boolean | means whether the user has marked it visited or completed or finished),
   "_id": (string)
 }
-
-Example output:
-{
-    "data":[...]
 
 return only valid json, nothing else
 `
@@ -127,7 +123,7 @@ router.post('/subset', async (req, res) => {
             top_p: 1
         });
 
-
+        console.log("raw AI response: ", aiResponse.choice[0].message.content)
 
         const result = JSON.parse(aiResponse.choices[0].message.content)
         console.log("The response from the AI was: ", result);
