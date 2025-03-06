@@ -3,9 +3,9 @@
 const Reco = require('../models/recoModel');
 const mongoose = require('mongoose');
 
-// GET all Recos for a user
+// GET all Recos authored by a user
 const getRecos = async (req, res) => {
-    console.log("### GET ALL RECOS OF A USER ###")
+    console.log("### GET ALL RECOS OF A USER (authored-only) ###")
     if (!req || !req.query) {
         return res.status(400).json({ error: "getRecos: missing query params" });
     }
@@ -14,6 +14,35 @@ const getRecos = async (req, res) => {
     let filter = { ...req.query };
 
     try {
+        const recos = await Reco.find(filter).sort({ createdAt: -1 })
+        res.status(200).json(recos)
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ error: error.message });
+    }
+
+}
+
+// GET all Recos that are visible to the user
+const getAllRecos = async (req, res) => {
+    console.log("### GET ALL RECOS OF A USER (all-visible)###")
+    if (!req || !req.query) {
+        return res.status(400).json({ error: "getAllRecos: missing query params" });
+    }
+
+    const userID = req.query.uid;
+
+    // end result of filter: all entries except where (uid!=reco.uid && isPrviated)
+    const filter = {
+        $or: [
+            { uid: userID },
+            { isPrivate: false },
+            { isProposed: true },
+        ]
+    }
+
+    try {
+
         const recos = await Reco.find(filter).sort({ createdAt: -1 })
         res.status(200).json(recos)
     } catch (error) {
@@ -118,6 +147,7 @@ module.exports = {
     createReco,
     deleteReco,
     updateReco,
+    getAllRecos,
 };
 
 
