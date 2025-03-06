@@ -46,7 +46,7 @@ const createReco = async (req, res) => {
     try {
         // reco with proper ID formatting
         const rawReco = await Reco.create(reco)
-        console.log("success in creating a new Reco")
+        console.log("rawReco created from the database: ", rawReco);
         // turn created documented into an object to format _id
         const newReco = rawReco.toObject()
         newReco._id = newReco._id.toString()
