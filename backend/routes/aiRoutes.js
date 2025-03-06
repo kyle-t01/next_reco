@@ -55,7 +55,7 @@ First, you must always follow the below ruleset:
 - you must ONLY do filtering, sorting, tailoring on the given list, not modify its contents
 - filtering means removing non-matching recos based on the attributes found ONLY within the Reco Schema
 - sorting means rearranging the list of recos based on the attributes found ONLY within the Reco Schema
-- tailoring means to further filter the list of recos based on implicit or inferred attributes, by look at the title, subtitle, description, address
+- tailoring means to further filter the list of recos based on implicit or inferred attributes, by look at the title, subtitle, description, address etc to be context-aware
 - filteringCriteria is just the filtering rules in JSON form
 - sortingCriteria is just the sorting rules in JSON form
 
@@ -83,11 +83,6 @@ Example output:
     "sortingCriteria: {"sortBy":"title, "order":"asc"},
     "_idList":[_id1, _id2, ...]
 }
-
-Tailoring Guide: 
-I want physical activities => look at Recos that would have some physical activities
-I want Korean food, but I'm sick of KBBQ => look at Recos that are Korean but don't include ones with KBBQ
-
 
 return only valid json, nothing else
 `
