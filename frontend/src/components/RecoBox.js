@@ -3,7 +3,11 @@
 import { useState, useEffect } from "react";
 import RecoForm from "./RecoForm";
 import { fetchGoogleData } from "../services/googleServices";
+import { UserAuth } from "../context/AuthContext";
 
+
+
+// order of tag importance: visited? proposed? food? privated? owned by you?
 
 const RecoBox = ({ reco }) => {
 
@@ -13,6 +17,8 @@ const RecoBox = ({ reco }) => {
     const [isRecoUpdated, setIsRecoUpdated] = useState(false)
     const [recoData, setRecoData] = useState(reco);
     const [googleData, setGoogleData] = useState(null)
+
+    const { user } = UserAuth()
 
 
     useEffect(() => {
@@ -61,15 +67,43 @@ const RecoBox = ({ reco }) => {
     const renderFrontBox = () => {
         if (!recoData) return;
         if (isViewing) return;
-        return (<div className="reco-front">
-            <h4 className="reco-title" > {recoData.title}</h4>
-            <p> {recoData.subTitle}</p>
-            {renderShortDesc()}
-            {renderImage()}
-            {renderReviews()}
+
+        // tag displayNames
+        const visited = recoData.isVisited ? "visited" : "not visited";
+        const proposed = recoData.isProposed ? "Let's do this next!" : "not proposed"
+        const category = recoData.category
+        const privateGroup = recoData.isPrivate ? "private" : "public"
+        const author = recoData.uid == user.uid ? "author: you" : "author: group"
+        // tag classNames
+        const visitedClassName = recoData.isVisited ? "tag-visited" : "tag-not-visited";
+        const proposedClassName = recoData.isProposed ? "tag-proposed" : "tag-not-proposed";
+        const categoryClassName = "tag-category";
+        const privateGroupClassName = recoData.isPrivate ? "tag-private" : "tag-public";
+        const authorClassName = recoData.uid === user.uid ? "tag-author-you" : "tag-author-group";
+
+        return (
+            <div className="reco-front">
+                <div>
+                    <h4 className="reco-title" > {recoData.title}</h4>
 
 
-        </div>
+
+                </div>
+
+                <p> {recoData.subTitle}</p>
+                {renderShortDesc()}
+                {renderImage()}
+                {renderReviews()}
+                <div className="tags">
+                    <div className={`tag ${visitedClassName}`}>{visited}</div>
+                    <div className={`tag ${proposedClassName}`}>{proposed}</div>
+                </div>
+                <div className="tags">
+                    <div className={`tag ${categoryClassName}`}>{category}</div>
+                    <div className={`tag ${privateGroupClassName}`}>{privateGroup}</div>
+                    <div className={`tag ${authorClassName}`}>{author}</div>
+                </div>
+            </div>
         )
     }
 
@@ -137,27 +171,29 @@ const RecoBox = ({ reco }) => {
         if (!googleData) return;
 
         return (
-
-            < div >
-                <p>
-                    <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleData.vicinity)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        📍 {googleData.vicinity}
-                    </a>
-                </p>
-                {
-                    googleData.website && <a
-                        href={googleData.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        🌐 {googleData.title} Website
-                    </a>
-                }
-            </div >
+            <div>
+                <div className="editorial">"{googleData.editorialSummary}"</div>
+                <div className="hyperlinks">
+                    <p>
+                        <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleData.vicinity)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            📍 {googleData.vicinity}
+                        </a>
+                    </p>
+                    {
+                        googleData.website && <a
+                            href={googleData.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            🌐 {googleData.title} Website
+                        </a>
+                    }
+                </div>
+            </div>
         )
     }
 
