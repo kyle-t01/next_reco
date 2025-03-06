@@ -482,6 +482,16 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                                 />
                                 Visited: mark this Reco visited or finished
                             </label>
+                            {/* Category */}
+                            <label>
+
+                                <input
+                                    type="checkbox"
+                                    checked={category === "food"}
+                                    onChange={(e) => setCategory(e.target.checked ? "food" : "non-food")}
+                                />
+                                Food: tick the box if Reco is food-related
+                            </label>
                         </div>
 
                         {/* buttons */}
