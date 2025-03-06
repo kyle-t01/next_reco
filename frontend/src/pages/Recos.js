@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { getRecos, getGroupRecos, getProposedRecos } from '../services/recoServices'
+import { getRecos, getGroupRecos, getProposedRecos, createReco } from '../services/recoServices'
+import { fetchPlaceIDFromText } from "../services/googleServices";
 import { UserAuth } from '../context/AuthContext'
 
 import RecoForm from "../components/RecoForm";
 import RecoGridDisplay from "../components/RecoGridDisplay";
+import PromptBox from "../components/PromptBox";
 
 
 const Recos = () => {
@@ -42,33 +44,6 @@ const Recos = () => {
         setActiveTab(tabNum);
     }
 
-    // render a bar where users can input prompts into
-    const renderPromptBar = () => {
-        const maxChars = 300;
-        if (isFormOpen) return;
-
-        return (
-            <div >
-                <div className="prompt-bar">
-                    <textarea
-                        className="input"
-                        type="text"
-                        placeholder="Use A.I. to automatically create a new Reco!! Enter prompt here..."
-                        value={prompt}
-                        onChange={(e) => setPrompt(e.target.value)}
-                        rows={3}
-                        maxLength={maxChars}
-                    />
-                    <div className="char-counter">
-                        {prompt.length} / {maxChars}
-                    </div>
-                    <button className="generate" onClick={() => console.log("GENERATING AI RESPONSE")} disabled={false}>
-                        {"Generate"}
-                    </button>
-                </div>
-            </div>)
-    }
-
     // render a tab and its contents when it is active
     const renderActiveTab = () => {
         if (isFormOpen) return;
@@ -94,11 +69,112 @@ const Recos = () => {
 
     }, [user, activeTab, isFormOpen]);
 
+    const handleAIResponse = async (data) => {
+        console.log("handling AI Response")
+        if (!data) return;
+        // get the user id
+        const currentUID = user.uid;
+        const categoryMode = data.categoryMode
+        console.log("prompt category was: ", categoryMode)
+        // format data correctly according to category
+        if (["create-lookup", "create-manual", "update-mode"].includes(categoryMode)) {
+
+            // make a new object from the AI data
+            let recoAIObject = {
+                title: data.title || "",
+                subTitle: data.subTitle || "",
+                category: data.category || "food",
+                address: data.address || "",
+                description: data.description || "",
+                isPrivate: data.isPrivate || false,
+                isProposed: data.isProposed || false,
+                placeID: data.placeID || null,
+                _id: data._id || null,
+                uid: data.uid || currentUID,
+            };
+
+            // console log the returned data
+            console.log("AI returned this object: ", recoAIObject);
+
+            // handle case where create-manual
+            if (categoryMode === "create-manual") {
+                console.log("[create-manual]")
+                console.log("Creating new reco (from AI):", recoAIObject);
+                const newReco = await createReco(user, recoAIObject);
+                console.log("newReco to be added to the recos list: ", newReco)
+                setRecos([newReco, ...recos]);
+                onRecoAdded();
+                //handleClose();
+
+            }
+            // handle case where create-lookup
+            if (categoryMode === "create-lookup") {
+                console.log("[create-lookup]")
+                console.log("Creating new reco (from AI)")
+                // lookup the location in google api, look at address
+                console.log("The address to be looked-up: ", recoAIObject.address)
+                const newPlaceID = await fetchPlaceIDFromText(recoAIObject.address)
+                console.log(newPlaceID)
+                recoAIObject.placeID = newPlaceID;
+                const newReco = await createReco(user, recoAIObject);
+                console.log("newReco to be added to the recos list: ", newReco)
+                setRecos([newReco, ...recos]);
+                onRecoAdded();
+                //handleClose();
+
+
+            }
+            // handle case where update-mode
+            if (categoryMode === "update-mode") {
+                console.log("[update-mode]")
+                console.log("Updating a reco: (from Ai)", recoAIObject);
+                //const data = await updateReco(user, recoAIObject);
+                //onRecoUpdated(data)
+                //handleClose();
+
+
+                //TODO: philosophy
+                // either openai has direct access to backend (guarenteed new)
+                // or we pass in a list of recos to ai to process
+            }
+
+        }
+        // delete-mode should not be allowed to do anything in reco form!
+        if (categoryMode === "delete-mode") {
+            console.log("[delete-mode] is invalid within reco form")
+
+
+
+        }
+        // sort-filter should not be allowed to do anything in reco form!
+        if (categoryMode === "sort-filter") {
+            console.log("[sort-filter] is invalid within reco form")
+
+
+        }
+
+
+    };
+
+
+    const onRecoAdded = () => {
+        console.log("AI added a new Reco ")
+
+
+        return;
+    }
+
+
     return (
         <div className="recos">
 
             {renderRecoNavbar()}
-
+            <PromptBox
+                user={user}
+                initialPrompt={prompt}
+                reco={null}
+                onAIResponse={handleAIResponse}
+            />
             {renderActiveTab()}
 
             <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} reco={null} prompt={prompt} />
@@ -108,4 +184,4 @@ const Recos = () => {
 }
 
 export default Recos
-/* {renderPromptBar()} */
+/* */
