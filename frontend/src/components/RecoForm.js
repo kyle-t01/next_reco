@@ -174,7 +174,9 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             alert("Please enter a valid place with a title and address.");
             return;
         }
-        const uid = user.uid;
+        // if there is an existing author, don't change author
+        const uid = reco?.uid ?? user.uid;
+
         const _id = reco?._id
         const newReco = {
             _id,
