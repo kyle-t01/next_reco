@@ -100,7 +100,7 @@ router.post('/subset', async (req, res) => {
 
     console.log("The list of reco recieved was: ", recos.map((reco) => reco.title))
 
-
+    console.log("The list of recos sent to ai was: ", JSON.stringify(recos))
 
     // check whether there was a prompt
     if (!prompt || prompt.trim() === "") {
