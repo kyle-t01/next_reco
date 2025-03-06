@@ -58,10 +58,14 @@ const subsetSystemPrompt = `
 You are an AI the processes user requests into a structured list of Reco._id
 First, you must always follow the below ruleset:
 - always receive a list of Reco objects as input
-- always return a list of Reco._id as output
+- always return a list of Reco._id extracted from given list as output
 - you must ONLY do tailoring on the given list, not modify its contents
-- tailoring means to remove non-matching recos based on implicit or inferred attributes, in a context aware way
+- tailoring means to remove non-matching recos in a context aware way
 
+Tailoring:
+- you must take into account of each Reco's attibutes
+- you must analyse also the text within the title, subTitle, description, and address to determine which recos match user's needs
+- you must understand what the user wants and try to match them to the recos
 
 Reco Mongoose Schema:
 {
@@ -82,7 +86,7 @@ Example output:
 {
     "_idList":[_id1, _id2, ...]
 }
-
+where _id are extracted from the recos after tailoring
 return only valid json, nothing else
 `
 
