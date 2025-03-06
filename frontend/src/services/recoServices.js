@@ -28,7 +28,7 @@ const fetchRecos = async (user, method, body = null, queryParams = {}) => {
         // construct the query string
         const queryStr = new URLSearchParams(queryParams).toString();
         const url = `https://next-reco-app.onrender.com/api/recos${queryStr ? `?${queryStr}` : ""}`;
-        console.log("url: ", url)
+
         const response = await fetch(url, requestOptions);
 
 
@@ -49,11 +49,11 @@ const fetchRecos = async (user, method, body = null, queryParams = {}) => {
 
 }
 
+// gets personal recos authored by the user
 export const getRecos = async (user) => {
     const data = await fetchRecos(user, "GET", null, { uid: user.uid });
     return data;
 }
-
 
 export const getGroupRecos = async (user) => {
     const data = await fetchRecos(user, "GET", null, { isPrivate: "false" });
@@ -80,3 +80,35 @@ export const deleteReco = async (user, reco) => {
     const data = await fetchRecos(user, "DELETE", null, { _id: reco._id });
     return data;
 }
+
+
+// connect to GET /api/recos/all
+export const getAllRecos = async (user) => {
+
+    try {
+        // get current id token of user
+        const idToken = await user.getIdToken();
+
+        const headers = {
+            'Authorization': `Bearer ${idToken}`,
+            "Content-Type": "application/json",
+        };
+        const requestOptions = {
+            method: 'GET',
+            headers: headers,
+        };
+
+        const url = `https://next-reco-app.onrender.com/api/recos/all`;
+        const response = await fetch(url, requestOptions);
+
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            console.error(`ERROR: could not get all recos`);
+            return null;
+        }
+    } catch (error) {
+        console.log("error:", error);
+    }
+};
