@@ -40,9 +40,8 @@ const createReco = async (req, res) => {
         return res.status(400).json({ error: "createReco: missing reco object!" });
     }
 
-    if (reco._id) {
-        return res.status(400).json({ error: "createReco: proto reco should NOT already have an _id!" });
-    }
+    // drop the _id field
+    delete reco._id;
 
     try {
         // reco with proper ID formatting
