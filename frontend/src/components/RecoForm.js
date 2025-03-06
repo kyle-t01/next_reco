@@ -36,6 +36,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
     const [isProposed, setIsProposed] = useState(false);
     const [imageUrls, setImageUrls] = useState([]);
     const [placeID, setPlaceID] = useState(null);
+    const [isVisited, setIsVisited] = useState(false);
     const [isValidSearch, setIsValidSearch] = useState(null);
     const [userPrompt, setUserPrompt] = useState(prompt || "")
     const [googleData, setGoogleData] = useState(null)
@@ -61,6 +62,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             setIsProposed(reco.isProposed);
             setImageUrls(reco.googleData?.imageUrls || []);
             setPlaceID(reco.placeID || null);
+            setIsVisited(reco.isVisited)
             // if there was a placeID, should load up the google data object
             if (reco && reco.placeID && reco.placeID.trim() !== "") {
                 loadGoogleData()
@@ -184,6 +186,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             isPrivate,
             isProposed,
             uid,
+            isVisited,
             placeID: placeID
         };
 
@@ -232,6 +235,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                 placeID: data.placeID || null,
                 _id: data._id || null,
                 uid: data.uid || currentUID,
+                isVisited: data.isVisited
             };
 
             // console log the returned data
@@ -308,6 +312,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         setUserPrompt("")
         setAIError(false)
         setErrorMessageAI(null)
+        setIsVisited(false)
 
         // reset input ref
         if (inputRef.current) {
@@ -467,12 +472,23 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                                 />
                                 Proposed: any group member can view it in the [Let's do this next!] tab
                             </label>
+                            {/* isVisited */}
+                            <label>
+
+                                <input
+                                    type="checkbox"
+                                    checked={isVisited}
+                                    onChange={(e) => setIsVisited(e.target.checked)}
+                                />
+                                Visited: mark this Reco visited or finished
+                            </label>
                         </div>
 
                         {/* buttons */}
                         <div className="button-group">
                             <button type="button" className="cancel" onClick={handleClose}>Cancel</button>
                             <button type="submit" className="submit" onClick={handleSubmit}>{updateMode ? "Update" : "Add"}</button>
+
                         </div>
                         {<div className="button-group">
                             {renderDeleteButton()}
