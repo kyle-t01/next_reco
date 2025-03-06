@@ -14,8 +14,8 @@ const openai = new OpenAI({
 const systemPrompt = `
 You are an AI that processes user requests into structured Reco objects.
 First, classify the request into one of the below categories based on the user:
-- [create-manual] specifying a custom event and full address, and the address or location is a personal location
-- [create-lookup] finding an restaurant, point of interest, venue, or business on google maps.
+- [create-lookup] finding an restaurant, point of interest, venue, or business on google maps, and clearly a public location
+- [create-manual] specifying a custom event and full address, and the address or location is a personal or private location
 - [update-mode] updating an existing reco, while taking into account of user supplied reco.
 - [delete-mode] deleting an existing reco.
 - [sort-filter] filtering or sorting existing recos.
