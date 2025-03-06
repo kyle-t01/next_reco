@@ -134,30 +134,28 @@ const Recos = () => {
             if (categoryMode === "update-mode") {
                 console.log("[update-mode]")
                 console.log("Updating a reco: (from Ai)", recoAIObject);
+                console.log("updating recos in this manner is unsafe and not allowed!")
                 //const data = await updateReco(user, recoAIObject);
                 //onRecoUpdated(data)
                 //handleClose();
 
-
-                //TODO: philosophy
-                // either openai has direct access to backend (guarenteed new)
-                // or we pass in a list of recos to ai to process
             }
 
         }
         // delete-mode should not be allowed to do anything in reco form!
         if (categoryMode === "delete-mode") {
             console.log("[delete-mode] is invalid within reco form")
-
+            console.log("deleting recos in this way is unsafe and not allowed!")
 
 
         }
         // sort-filter should not be allowed to do anything in reco form!
         if (categoryMode === "sort-filter") {
             console.log("[sort-filter] mode")
-            //const data = await fetchAIResponseSubset(user, recos, prompt)
-
-
+            const { data } = await fetchAIResponseSubset(user, recos, prompt)
+            console.log(data)
+            const filteredRecos = recos.filter(reco => data.includes(reco._id));
+            setRecos(filteredRecos)
         }
 
 
