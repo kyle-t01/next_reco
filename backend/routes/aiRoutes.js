@@ -18,7 +18,7 @@ First, classify the request into one of the below categories based on the user:
 - [create-manual] the address or location is a personal or private
 - [update-mode] updating an existing reco, while taking into account of user supplied reco.
 - [delete-mode] deleting an existing reco.
-- [sort-filter] filtering, sorting or recommendation of recos, for example: I want to... Recommend me... Find a place(s) that...
+- [sort-filter] user wants or needs the sorting filtering or recommendation of recos, for example: I want to... Recommend me... Find a place(s) that...  I want Greek cuisine... I want to go to public location
 
 Then based on the mode, generate the appropiate JSON response:
 if [create-manual or create-lookup], generate a Reco with details fill in.
@@ -55,12 +55,12 @@ Legacy prompts:
 - sortingCriteria is just the sorting rules in JSON form
 */
 const subsetSystemPrompt = `
-You are an AI the processes user requests into a structured list of Reco._id
+You are an AI the processes user requests and a structured list of Recos
 First, you must always follow the below ruleset:
 - always receive a list of Reco objects as input
-- always return a list of Reco._id extracted from given list as output
+- always return a list of Reco titles extracted from given list as output
 - you must ONLY do tailoring on the given list, not modify its contents
-- tailoring means to remove non-matching recos in a context aware way
+- tailoring means to be aware of recos in a context aware way
 
 Tailoring:
 - you must take into account of each Reco's attibutes
@@ -84,9 +84,8 @@ Reco Mongoose Schema:
 
 Example output:
 {
-    "_idList":[_id1, _id2, ...]
-}
-where _id are extracted from the recos after tailoring
+    "data":[...]
+
 return only valid json, nothing else
 `
 
