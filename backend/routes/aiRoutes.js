@@ -123,7 +123,7 @@ router.post('/subset', async (req, res) => {
             top_p: 1
         });
 
-        console.log("raw AI response: ", aiResponse.choice[0].message.content)
+        console.log("raw AI response: ", aiResponse.choices[0].message.content)
 
         const result = JSON.parse(aiResponse.choices[0].message.content)
         console.log("The response from the AI was: ", result);
