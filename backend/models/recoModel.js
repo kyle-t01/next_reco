@@ -24,7 +24,6 @@ const recoSchema = new Schema({
     },
     address: {
         type: String,
-        required: true
     },
     description: {
         type: String,

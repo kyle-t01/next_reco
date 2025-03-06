@@ -170,8 +170,8 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (!title || !address || !isValidSearch) {
-            alert("Please enter a valid place with a title and address.");
+        if (!title) {
+            alert("Please at least enter a title!");
             return;
         }
         // if there is an existing author, don't change author
@@ -432,7 +432,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                             onChange={(e) => setTitle(e.target.value)}
                         />
                         {/* Sub Title */}
-                        <label>Sub Title (optional)</label>
+                        <label>Sub Title </label>
                         <input
                             type="text"
                             value={subTitle}
