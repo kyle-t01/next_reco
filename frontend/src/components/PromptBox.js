@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { fetchAIResponse } from "../services/aiServices";
 
-const PromptBox = ({ user, reco, userPrompt, onAIResponse }) => {
+const PromptBox = ({ user, reco, userPrompt, onAIResponse, onPromptChanged }) => {
     const [inititalPrompt, setInitialPrompt] = useState(userPrompt || "");
     const [isLoading, setIsLoading] = useState(false)
     const maxChars = 300;
@@ -32,6 +32,7 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse }) => {
         }
     };
 
+
     return (
         <div className="prompt-bar">
             <textarea
@@ -39,7 +40,7 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse }) => {
                 type="text"
                 placeholder="Use A.I. to automatically create, update, delete and even filter Recos!! Enter prompt here..."
                 value={inititalPrompt}
-                onChange={(e) => { setInitialPrompt(e.target.value); }}
+                onChange={(e) => { setInitialPrompt(e.target.value); onPromptChanged(e.target.value) }}
                 rows={3}
                 maxLength={maxChars}
             />

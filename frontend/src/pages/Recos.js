@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { getRecos, getGroupRecos, getProposedRecos, getAllRecos, createReco } from '../services/recoServices'
 import { fetchPlaceIDFromText } from "../services/googleServices";
+
+
 import { UserAuth } from '../context/AuthContext'
 
 import RecoForm from "../components/RecoForm";
 import RecoGridDisplay from "../components/RecoGridDisplay";
 import PromptBox from "../components/PromptBox";
+import { fetchAIResponseSubset } from "../services/aiServices";
 
 
 const Recos = () => {
@@ -151,7 +154,8 @@ const Recos = () => {
         }
         // sort-filter should not be allowed to do anything in reco form!
         if (categoryMode === "sort-filter") {
-            console.log("[sort-filter] is invalid within reco form")
+            console.log("[sort-filter] mode")
+            //const data = await fetchAIResponseSubset(user, recos, prompt)
 
 
         }
@@ -167,6 +171,9 @@ const Recos = () => {
         return;
     }
 
+    const onPromptChanged = (p) => {
+        setPrompt(p)
+    }
 
     return (
         <div className="recos">
@@ -177,6 +184,7 @@ const Recos = () => {
                 initialPrompt={prompt}
                 reco={null}
                 onAIResponse={handleAIResponse}
+                onPromptChanged={onPromptChanged}
             />
             {renderActiveTab()}
 

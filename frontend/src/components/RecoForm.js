@@ -412,6 +412,10 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         )
     }
 
+    const onPromptChanged = (p) => {
+
+        setUserPrompt(p)
+    }
 
     return (
         <div className="modal-form" >
@@ -517,6 +521,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
                         initialPrompt={userPrompt}
                         reco={reco}
                         onAIResponse={handleAIResponse}
+                        onPromptChanged={onPromptChanged}
                     />
                 </div>
 
