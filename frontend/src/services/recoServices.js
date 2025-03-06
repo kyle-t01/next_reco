@@ -98,7 +98,7 @@ export const getAllRecos = async (user) => {
             headers: headers,
         };
 
-        const url = `https://next-reco-app.onrender.com/api/recos/all`;
+        const url = `https://next-reco-app.onrender.com/api/recos/all?uid=${user.id}`;
         const response = await fetch(url, requestOptions);
 
         if (response.ok) {
