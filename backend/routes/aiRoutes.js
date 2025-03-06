@@ -47,17 +47,21 @@ return only valid json, nothing else
 `
 
 // subset systemPrompt used for filtering, sorting and recommending a susbet of recos back to the user
+/*
+Legacy prompts:
+- filtering means removing non-matching recos based on the attributes found ONLY within the Reco Schema
+- sorting means rearranging the list of recos based on the attributes found ONLY within the Reco Schema
+- filteringCriteria is just the filtering rules in JSON form
+- sortingCriteria is just the sorting rules in JSON form
+*/
 const subsetSystemPrompt = `
-You are an AI the processes user requests into a structured list of Reco._id as well as filtering and sorting criteria
+You are an AI the processes user requests into a structured list of Reco._id
 First, you must always follow the below ruleset:
 - always receive a list of Reco objects as input
 - always return a list of Reco._id as output
-- you must ONLY do filtering, sorting, tailoring on the given list, not modify its contents
-- filtering means removing non-matching recos based on the attributes found ONLY within the Reco Schema
-- sorting means rearranging the list of recos based on the attributes found ONLY within the Reco Schema
-- tailoring means to further filter the list of recos based on implicit or inferred attributes, by look at the title, subtitle, description, address etc to be context-aware
-- filteringCriteria is just the filtering rules in JSON form
-- sortingCriteria is just the sorting rules in JSON form
+- you must ONLY do tailoring on the given list, not modify its contents
+- tailoring means to remove non-matching recos based on implicit or inferred attributes, in a context aware way
+
 
 Reco Mongoose Schema:
 {
@@ -74,13 +78,8 @@ Reco Mongoose Schema:
   "_id": (string)
 }
 
-You must return a JSON object contaning the filtering criteria and sorting criteria
-And do tailoring (as defined in the ruleset) on the recos, returning a list of reco._ids
-
 Example output:
 {
-    "filterCriteria: {"category":"food", "isVisited":false},
-    "sortingCriteria: {"sortBy":"title, "order":"asc"},
     "_idList":[_id1, _id2, ...]
 }
 
