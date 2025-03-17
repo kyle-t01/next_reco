@@ -31,7 +31,8 @@ const getAllRecos = async (req, res) => {
     }
 
     const userID = req.query.uid;
-
+    console.log("get all recos query")
+    console.log(req.query)
     // end result of filter: all entries except where (uid!=reco.uid && isPrviated)
     const filter = {
         $or: [
