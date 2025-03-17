@@ -38,7 +38,7 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse, onPromptChanged }) =>
             <textarea
                 className="input"
                 type="text"
-                placeholder="Filter, sort, and get AI-powered recommendations! You can also create Recos! Enter instructions here..."
+                placeholder="Search, filter, and get AI-powered recommendations! You can also create Recos! Enter instructions here..."
 
                 value={inititalPrompt}
                 onChange={(e) => { setInitialPrompt(e.target.value); onPromptChanged(e.target.value) }}
