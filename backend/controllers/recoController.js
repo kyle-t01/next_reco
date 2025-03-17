@@ -12,6 +12,7 @@ const getRecos = async (req, res) => {
 
 
     let filter = { ...req.query };
+    console.log("filter: ,", filter)
 
     try {
         const recos = await Reco.find(filter).sort({ createdAt: -1 })
