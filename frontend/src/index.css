@@ -541,3 +541,9 @@ code {
   background-color: #bbb;
   color: white;
 }
+
+.error {
+  color: red;
+  text-align: center;
+  background-color: black;
+}
