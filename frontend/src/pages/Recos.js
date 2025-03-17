@@ -23,12 +23,15 @@ const Recos = () => {
 
     // prompt bar
     const [prompt, setPrompt] = useState("")
+    const [errorMessageAI, setErrorMessageAI] = useState(null)
 
     // load recos
     const loadRecos = async () => {
         if (!user) return;
         // load recos depending on the activeTab
+        setErrorMessageAI(null)
         setIsLoading(true);
+
         if (activeTab === 0) {
             setRecos(await getRecos(user));
         } else if (activeTab === 1) {
@@ -41,6 +44,7 @@ const Recos = () => {
         setIsLoading(false);
     }
 
+    // 
 
     // refresh recos of a specified tab
     const switchToTab = async (tabNum) => {
@@ -52,7 +56,7 @@ const Recos = () => {
     // render a tab and its contents when it is active
     const renderActiveTab = () => {
         if (isFormOpen) return;
-        if (isLoading) return <p>...</p>;
+        if (isLoading) return <p>Loading...</p>;
 
         return <RecoGridDisplay recos={recos} />;
     };
@@ -74,6 +78,11 @@ const Recos = () => {
         loadRecos()
 
     }, [user, activeTab, isFormOpen]);
+
+    const renderAIError = () => {
+        if (!errorMessageAI) return;
+        return <div className="error">{errorMessageAI}</div>
+    }
 
     const handleAIResponse = async (data) => {
         console.log("handling AI Response")
@@ -110,7 +119,7 @@ const Recos = () => {
                 console.log("newReco to be added to the recos list: ", newReco)
                 setRecos([newReco, ...recos]);
                 onRecoAdded();
-                //handleClose();
+
 
             }
             // handle case where create-lookup
@@ -126,15 +135,13 @@ const Recos = () => {
                 console.log("newReco to be added to the recos list: ", newReco)
                 setRecos([newReco, ...recos]);
                 onRecoAdded();
-                //handleClose();
-
 
             }
             // handle case where update-mode
             if (categoryMode === "update-mode") {
                 console.log("[update-mode]")
                 console.log("Updating a reco: (from Ai)", recoAIObject);
-                console.log("updating recos in this manner is unsafe and not allowed!")
+                setErrorMessageAI("Updating and Deleting Recos (using A.I.) is currently experimental, do it manually!!")
                 //const data = await updateReco(user, recoAIObject);
                 //onRecoUpdated(data)
                 //handleClose();
@@ -145,9 +152,7 @@ const Recos = () => {
         // delete-mode should not be allowed to do anything in reco form!
         if (categoryMode === "delete-mode") {
             console.log("[delete-mode] is invalid within reco form")
-            console.log("deleting recos in this way is unsafe and not allowed!")
-
-
+            setErrorMessageAI("Updating and Deleting Recos (using A.I.) is currently experimental, do it manually!!")
         }
         // sort-filter should not be allowed to do anything in reco form!
         if (categoryMode === "sort-filter") {
@@ -171,12 +176,14 @@ const Recos = () => {
 
     const onPromptChanged = (p) => {
         setPrompt(p)
+        setErrorMessageAI(null)
     }
 
     return (
         <div className="recos">
 
             {renderRecoNavbar()}
+
             <PromptBox
                 user={user}
                 initialPrompt={prompt}
@@ -184,6 +191,7 @@ const Recos = () => {
                 onAIResponse={handleAIResponse}
                 onPromptChanged={onPromptChanged}
             />
+            {renderAIError()}
             {renderActiveTab()}
 
             <RecoForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onRecoAdded={loadRecos} reco={null} prompt={prompt} />
