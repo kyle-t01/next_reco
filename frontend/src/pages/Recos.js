@@ -25,31 +25,46 @@ const Recos = () => {
     const [prompt, setPrompt] = useState("")
     const [errorMessageAI, setErrorMessageAI] = useState(null)
 
+    // displaying a subset of recos of an activeTab
+    const [isSubset, setIsSubset] = useState(false)
+
     // load recos
     const loadRecos = async () => {
         if (!user) return;
         // load recos depending on the activeTab
         setErrorMessageAI(null)
+
+        console.log("issubset: ", isSubset)
+
         setIsLoading(true);
 
         if (activeTab === 0) {
             setRecos(await getRecos(user));
+
         } else if (activeTab === 1) {
             setRecos(await getGroupRecos(user));
+
         } else if (activeTab === 2) {
+
             setRecos(await getProposedRecos(user));
         } else if (activeTab === 3) {
             setRecos(await getAllRecos(user));
+
         }
         setIsLoading(false);
+
     }
 
-    // 
 
-    // refresh recos of a specified tab
+    // switching to a different tab
     const switchToTab = async (tabNum) => {
-        // if tab num is the same, avoid retrieving from the database
-        if (tabNum == activeTab) return;
+        // are we in the same tab and subset of recos?
+        if (tabNum === activeTab && isSubset) {
+            // yes, so reload the current tab
+            setIsSubset(false)
+            await loadRecos()
+        }
+
         setActiveTab(tabNum);
     }
 
@@ -86,6 +101,9 @@ const Recos = () => {
 
     const handleAIResponse = async (data) => {
         console.log("handling AI Response")
+
+
+
         if (!data) return;
         // get the user id
         const currentUID = user.uid;
@@ -157,6 +175,7 @@ const Recos = () => {
         // sort-filter should not be allowed to do anything in reco form!
         if (categoryMode === "sort-filter") {
             console.log("[sort-filter] mode")
+            setIsSubset(true)
             const { data } = await fetchAIResponseSubset(user, recos, prompt)
             console.log(data)
             const filteredRecos = recos.filter(reco => data.includes(reco._id));
