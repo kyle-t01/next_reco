@@ -163,6 +163,12 @@ const Recos = () => {
             setRecos(filteredRecos)
         }
 
+        // invalid user request
+        if (categoryMode === "invalid") {
+            console.log("[invalid] A.I. could not understand user request")
+            setErrorMessageAI("ERROR: I did not understand your request!")
+        }
+
 
     };
 
