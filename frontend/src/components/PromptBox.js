@@ -38,7 +38,7 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse, onPromptChanged }) =>
             <textarea
                 className="input"
                 type="text"
-                placeholder="Filter, sort, and get AI-powered recommendations! You can also create, update, or delete Recos. Enter instructions here..."
+                placeholder="Filter, sort, and get AI-powered recommendations! You can also create Recos! Enter instructions here..."
 
                 value={inititalPrompt}
                 onChange={(e) => { setInitialPrompt(e.target.value); onPromptChanged(e.target.value) }}
@@ -49,7 +49,7 @@ const PromptBox = ({ user, reco, userPrompt, onAIResponse, onPromptChanged }) =>
                 {inititalPrompt.length} / {maxChars}
             </div>
             <button className="generate" onClick={handleSubmitPrompt} disabled={isLoading}>
-                {isLoading ? "A.I. responding..." : "Generate"}
+                {isLoading ? "A.I. responding..." : "Send"}
 
             </button>
         </div>
