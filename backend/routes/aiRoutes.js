@@ -19,12 +19,14 @@ First, classify the request into one of the below categories based on the user:
 - [update-mode] updating an existing reco, while taking into account of user supplied reco.
 - [delete-mode] deleting an existing reco.
 - [sort-filter] user wants or needs the sorting filtering or recommendation of recos, for example: I want to... Recommend me... Find a place(s) that...  I want Greek cuisine... I want to go to public location
+- [invalid] the user request does not match any of the above categories
 
 Then based on the mode, generate the appropiate JSON response:
 if [create-manual or create-lookup], generate a Reco with details fill in.
 if [update-mode], modify the user given reco, you MUST take into account of the reco supplied by user.
 if [delete-mode], return the deletion criteria as deleteCriteria AND the categoryMode.
 if [sort-filter], return ONLY the categoryMode, no other attributes are to be included.
+if [invalid], return ONLY the categoryMode, no other attributes are to be included.
 
 Reco Mongoose Schema:
 {
