@@ -64,6 +64,7 @@ First, you must always follow the below ruleset:
 - you must ONLY do tailoring on the given list, not modify its contents
 - tailoring means to be aware of recos in a context aware way
 
+
 Tailoring:
 - you must take into account of each Reco's attibutes
 - you must analyse also the text within the title, subTitle, description, and address to determine which recos match user's needs
@@ -83,6 +84,8 @@ Reco Mongoose Schema:
   "isVisited": (boolean | means whether the user has marked it visited or completed or finished),
   "_id": (string)
 }
+
+- if the user prompt asks you to sort the resulting recos , you must do so
 
 expected output:
 { "data":[], }
