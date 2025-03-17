@@ -283,7 +283,7 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
         if (categoryMode === "delete-mode") {
             console.log("[delete-mode] is invalid within reco form")
             setAIError(true)
-            setErrorMessageAI("ERROR: delete via A.I. is not available within forms")
+            setErrorMessageAI("ERROR: deletions of Recos should be done manually!!")
 
 
         }
@@ -293,6 +293,13 @@ const RecoForm = ({ isOpen, onClose, onRecoAdded, onRecoUpdated, onRecoDeleted, 
             setAIError(true)
             setErrorMessageAI("ERROR: sorting and filtering via A.I. are not available within forms")
 
+        }
+
+        // invalid user request
+        if (categoryMode === "invalid") {
+            console.log("[invalid] A.I. could not understand user request")
+            setAIError(true)
+            setErrorMessageAI("ERROR: I did not understand your request!")
         }
 
 
