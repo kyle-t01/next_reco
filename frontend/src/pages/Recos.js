@@ -133,6 +133,12 @@ const Recos = () => {
             if (categoryMode === "create-manual") {
                 console.log("[create-manual]")
                 console.log("Creating new reco (from AI):", recoAIObject);
+
+                // lookup the location in google api, look at address
+                console.log("The address to be looked-up: ", recoAIObject.address)
+                const newPlaceID = await fetchPlaceIDFromText(recoAIObject.address)
+                console.log(newPlaceID)
+                recoAIObject.placeID = newPlaceID;
                 const newReco = await createReco(user, recoAIObject);
                 console.log("newReco to be added to the recos list: ", newReco)
                 setRecos([newReco, ...recos]);
