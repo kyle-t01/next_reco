@@ -95,8 +95,7 @@ If you found this project interesting and would like to explore the app, here is
 ### Limitations and constraints
 - gpt-4o-mini rate limiting => 60k tokens/min, 500 requests/min
 - gpt-4o-mini token limits => 128k in, 16,384 out
-- gpt-4o-min costs => $0.15 per million tokens, $0.85
-- this 
+
 #### Output
 - output is a list of Reco.IDs => { "data":["67ca7480d773ddf3c2a28b54"] } => ~21 tokens each
 - set max_tokens: 1024 => AI output suports max of ~48 Reco IDs 
@@ -104,11 +103,19 @@ If you found this project interesting and would like to explore the app, here is
 #### Input
 - in current implementation, 
 - average Reco requires ~300 tokens (assuming description stays under 200 chars)
-- system prompt requires ~500 tokens
+- system prompt for categorsing requires ~500 tokens
+- system prompt for filtering requires ~300 tokens
 - user prompt requires ~80 tokens (300 char limit enforced)
 - => A.I could in theory, support the processing of ~420 Recos at a time (assuming no hallucination)
 
 If want output to match input size, then increase max_tokens = ~9k
+#### Cost per usage; a quick and dirty estimate
+- gpt-4o-min costs per million tokens=> $0.15/M input, $0.60/M output
+- know that input costs will likely dominate the overall cost (as input and ouput # tokens differ by 2x orders of magnitude)
+- min input tokens to filter a list of X recos => ~ 880 + (300)X
+- ~(500 categorising prompt + 300 filtering prompt + 80 user prompt) = ~880 tokens
+- cost of 10 Recos: ~ $0.0006
+- cost of 100 Recos: ~ $0.005
 
 ## Prompt Engineering
 ### Determining the category of user request
